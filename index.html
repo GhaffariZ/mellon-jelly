@@ -15,15 +15,15 @@
     }
 
     :root {
-      --bg-studio: #F4F2EC;
-      --bg-panel: rgba(248, 247, 243, 0.88);
+      --bg-studio: #F5F3ED;
+      --bg-panel: rgba(248, 247, 243, 0.92);
       --border-subtle: rgba(40, 36, 32, 0.12);
-      --border-focus: rgba(40, 36, 32, 0.28);
+      --border-focus: rgba(40, 36, 32, 0.30);
       --ink-primary: #1C1917;
       --ink-secondary: #57534E;
       --ink-muted: #8C867E;
       --accent: #D91E36;
-      --accent-glow: rgba(217, 30, 54, 0.18);
+      --accent-glow: rgba(217, 30, 54, 0.20);
       --font-serif: "Playfair Display", "Didot", "Bodoni MT", "Georgia", serif;
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --font-mono: "SF Mono", "Roboto Mono", "Menlo", monospace;
@@ -139,10 +139,10 @@
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      padding: 6px 12px;
+      padding: 6px 14px;
       background: var(--bg-panel);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border-subtle);
       border-radius: 9999px;
       font-family: var(--font-mono);
@@ -150,7 +150,7 @@
       font-weight: 500;
       letter-spacing: 0.08em;
       color: var(--ink-secondary);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
     }
 
     .status-dot {
@@ -177,7 +177,7 @@
       grid-column: 2;
       grid-row: 2;
       align-self: center;
-      width: 280px;
+      width: 285px;
       background: var(--bg-panel);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
@@ -249,12 +249,12 @@
 
     .preset-btn:hover {
       border-color: var(--border-focus);
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.55);
     }
 
     .preset-btn.active {
       border-color: var(--accent);
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.90);
       box-shadow: 0 0 0 1px var(--accent);
     }
 
@@ -352,7 +352,7 @@
 
     .action-btn {
       padding: 8px 10px;
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.65);
       border: 1px solid var(--border-subtle);
       border-radius: 7px;
       color: var(--ink-primary);
@@ -490,7 +490,7 @@
     }
 
     .notes-card {
-      width: 280px;
+      width: 285px;
       background: var(--bg-panel);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
@@ -554,7 +554,7 @@
     #fallback-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(244, 242, 236, 0.95);
+      background: rgba(245, 243, 237, 0.95);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       display: none;
@@ -658,7 +658,7 @@
 
   <!-- WebGPU Canvas Viewport -->
   <div id="canvas-container">
-    <canvas id="gpu-canvas"></canvas>
+    <canvas id="gpu-canvas" width="1280" height="800"></canvas>
   </div>
 
   <!-- Editorial Interface Overlay -->
@@ -728,9 +728,9 @@
       <div class="slider-group">
         <div class="slider-header">
           <span class="slider-title">Internal damping</span>
-          <span class="slider-value" id="val-damping">0.07</span>
+          <span class="slider-value" id="val-damping">0.05</span>
         </div>
-        <input type="range" id="slider-damping" min="0.015" max="0.22" step="0.005" value="0.07">
+        <input type="range" id="slider-damping" min="0.01" max="0.20" step="0.005" value="0.05">
         <div class="slider-caption">
           <span>Lively wobble</span>
           <span>Syrupy settle</span>
@@ -739,10 +739,10 @@
 
       <!-- Buttons -->
       <div class="button-row">
-        <button class="action-btn" id="btn-nudge" title="Give the slice an interactive wobble tap">
+        <button class="action-btn" id="btn-nudge" title="Give the slice an interactive wobble tap (N)">
           <span>👋</span> Give it a nudge
         </button>
-        <button class="action-btn" id="btn-reset" title="Restore rest shape and position">
+        <button class="action-btn" id="btn-reset" title="Restore rest shape and position (R)">
           <span>↺</span> Reset
         </button>
         <button class="action-btn full-width" id="btn-pause" title="Pause or resume physics (Spacebar)">
@@ -798,13 +798,13 @@
             <strong>Volumetric XPBD:</strong> The slice is solved using Extended Position Based Dynamics over 1,440 tetrahedra. Hydrostatic tetrahedral constraints enforce strict volume preservation while edge compliances model hyperelastic rebound and rind stiffness.
           </p>
           <p>
-            <strong>Optical Absorption & Refraction:</strong> A two-pass WGSL pipeline evaluates physical thickness per pixel via back-face depth reprojection. Transmitted light follows the Beer–Lambert law ($I = I_0 e^{-\sigma d}$) with IOR 1.34 Snell refraction and thin-edge subsurface scattering.
+            <strong>Optical Absorption & Refraction:</strong> A multi-pass WGSL pipeline evaluates physical thickness per pixel via back-face depth reprojection. Transmitted light follows the Beer–Lambert law ($I = I_0 e^{-\sigma d}$) with Snell refraction, ruby caustic halos, and thin-edge subsurface scattering.
           </p>
           <p>
-            <strong>Anatomical Embedding:</strong> Twelve 3D teardrop seeds and internal micro-bubbles are coupled directly to the deformation gradient of their containing tetrahedra, rotating and stretching naturally with the flesh.
+            <strong>Anatomical Embedding:</strong> Twelve 3D teardrop seeds are bound directly to the deformation gradient of their containing tetrahedra, rotating and stretching naturally with the flesh.
           </p>
           <p>
-            <strong>Floor Dynamics:</strong> Ground contacts feature unilateral non-penetration penalties, Coulomb friction, and dynamic contact ambient occlusion with warm caustic halos.
+            <strong>Boundary Dynamics:</strong> Ground contacts feature true static and kinetic Coulomb friction with unilateral non-penetration penalties, producing realistic cantilever bends and jelly wobbles.
           </p>
         </div>
       </details>
@@ -829,14 +829,33 @@
   <script type="module">
     // ── MATH UTILITIES ──
     const Vec3 = {
-      create: (x = 0, y = 0, z = 0) => new Float32Array([x, y, z]),
-      set: (out, x, y, z) => { out[0] = x; out[1] = y; out[2] = z; return out; },
-      copy: (out, a) => { out[0] = a[0]; out[1] = a[1]; out[2] = a[2]; return out; },
-      add: (out, a, b) => { out[0] = a[0] + b[0]; out[1] = a[1] + b[1]; out[2] = a[2] + b[2]; return out; },
-      sub: (out, a, b) => { out[0] = a[0] - b[0]; out[1] = a[1] - b[1]; out[2] = a[2] - b[2]; return out; },
-      scale: (out, a, s) => { out[0] = a[0] * s; out[1] = a[1] * s; out[2] = a[2] * s; return out; },
-      dot: (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2],
-      cross: (out, a, b) => {
+      create(x = 0, y = 0, z = 0) {
+        return new Float32Array([x, y, z]);
+      },
+      set(out, x, y, z) {
+        out[0] = x; out[1] = y; out[2] = z;
+        return out;
+      },
+      copy(out, a) {
+        out[0] = a[0]; out[1] = a[1]; out[2] = a[2];
+        return out;
+      },
+      add(out, a, b) {
+        out[0] = a[0] + b[0]; out[1] = a[1] + b[1]; out[2] = a[2] + b[2];
+        return out;
+      },
+      sub(out, a, b) {
+        out[0] = a[0] - b[0]; out[1] = a[1] - b[1]; out[2] = a[2] - b[2];
+        return out;
+      },
+      scale(out, a, s) {
+        out[0] = a[0] * s; out[1] = a[1] * s; out[2] = a[2] * s;
+        return out;
+      },
+      dot(a, b) {
+        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+      },
+      cross(out, a, b) {
         const ax = a[0], ay = a[1], az = a[2];
         const bx = b[0], by = b[1], bz = b[2];
         out[0] = ay * bz - az * by;
@@ -844,36 +863,38 @@
         out[2] = ax * by - ay * bx;
         return out;
       },
-      len: (a) => Math.hypot(a[0], a[1], a[2]),
-      lenSq: (a) => a[0] * a[0] + a[1] * a[1] + a[2] * a[2],
-      normalize: (out, a) => {
+      len(a) {
+        return Math.hypot(a[0], a[1], a[2]);
+      },
+      normalize(out, a) {
         const l = Math.hypot(a[0], a[1], a[2]);
-        if (l > 1e-6) {
+        if (l > 1e-7) {
           out[0] = a[0] / l; out[1] = a[1] / l; out[2] = a[2] / l;
         } else {
-          out[0] = 0; out[1] = 0; out[2] = 0;
+          out[0] = 0; out[1] = 1; out[2] = 0;
         }
         return out;
       }
     };
 
     const Mat4 = {
-      create: () => new Float32Array([
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
-      ]),
-      perspective: (out, fovRad, aspect, near, far) => {
-        const f = 1.0 / Math.tan(fovRad / 2);
-        const nf = 1 / (near - far);
-        out[0] = f / aspect; out[1] = 0; out[2] = 0; out[3] = 0;
-        out[4] = 0; out[5] = f; out[6] = 0; out[7] = 0;
-        out[8] = 0; out[9] = 0; out[10] = (far + near) * nf; out[11] = -1;
-        out[12] = 0; out[13] = 0; out[14] = (2 * far * near) * nf; out[15] = 0;
+      create() {
+        const out = new Float32Array(16);
+        out[0] = 1; out[5] = 1; out[10] = 1; out[15] = 1;
         return out;
       },
-      lookAt: (out, eye, center, up) => {
+      perspective(out, fovRad, aspect, near, far) {
+        const f = 1.0 / Math.tan(fovRad / 2);
+        const nf = 1 / (near - far);
+        out.fill(0);
+        out[0] = f / aspect;
+        out[5] = f;
+        out[10] = (far + near) * nf;
+        out[11] = -1;
+        out[14] = (2 * far * near) * nf;
+        return out;
+      },
+      lookAt(out, eye, center, up) {
         const eyex = eye[0], eyey = eye[1], eyez = eye[2];
         const upx = up[0], upy = up[1], upz = up[2];
         const centerx = center[0], centery = center[1], centerz = center[2];
@@ -884,11 +905,12 @@
 
         let x0 = upy * z2 - upz * z1, x1 = upz * z0 - upx * z2, x2 = upx * z1 - upy * z0;
         len = Math.hypot(x0, x1, x2);
-        if (!len) { x0 = 0; x1 = 0; x2 = 0; } else { len = 1 / len; x0 *= len; x1 *= len; x2 *= len; }
+        if (len > 1e-7) {
+          len = 1 / len;
+          x0 *= len; x1 *= len; x2 *= len;
+        }
 
         let y0 = z1 * x2 - z2 * x1, y1 = z2 * x0 - z0 * x2, y2 = z0 * x1 - z1 * x0;
-        len = Math.hypot(y0, y1, y2);
-        if (!len) { y0 = 0; y1 = 0; y2 = 0; } else { len = 1 / len; y0 *= len; y1 *= len; y2 *= len; }
 
         out[0] = x0; out[1] = y0; out[2] = z0; out[3] = 0;
         out[4] = x1; out[5] = y1; out[6] = z1; out[7] = 0;
@@ -899,7 +921,7 @@
         out[15] = 1;
         return out;
       },
-      multiply: (out, a, b) => {
+      multiply(out, a, b) {
         const a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3];
         const a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
         const a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
@@ -930,7 +952,7 @@
         out[15] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
         return out;
       },
-      invert: (out, a) => {
+      invert(out, a) {
         const a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3];
         const a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
         const a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
@@ -973,63 +995,57 @@
       }
     };
 
-    // ── CULTIVAR COLOR PRESETS ──
+    // ── MATERIAL CULTIVAR PRESETS ──
     const PRESETS = {
       ruby: {
-        name: "Classic Ruby",
+        name: "Classic Ruby Watermelon",
         accent: "#D91E36",
-        fleshBase: [0.92, 0.12, 0.22],
-        fleshAbsorption: [0.45, 1.85, 1.65],
-        pithColor: [0.88, 0.94, 0.85],
-        rindBase: [0.24, 0.58, 0.26],
-        rindDark: [0.08, 0.22, 0.10],
-        seedBody: [0.10, 0.08, 0.07],
-        seedRim: [0.26, 0.16, 0.12],
-        shadowTint: [0.22, 0.18, 0.18],
-        causticTint: [0.82, 0.16, 0.22]
+        fleshBase: [0.93, 0.12, 0.22, 0.06],
+        fleshAbsorption: [0.12, 1.85, 1.40, 1.34],
+        pithColor: [0.89, 0.94, 0.88, 0.0],
+        rindBase: [0.18, 0.58, 0.28, 0.0],
+        rindDark: [0.06, 0.22, 0.09, 0.0],
+        shadowTint: [0.55, 0.42, 0.38, 0.80],
+        causticTint: [0.85, 0.08, 0.22, 0.70]
       },
       sunburst: {
-        name: "Sunburst Melon",
+        name: "Golden Sunburst Melon",
         accent: "#F7B32B",
-        fleshBase: [0.98, 0.72, 0.16],
-        fleshAbsorption: [0.18, 0.65, 2.20],
-        pithColor: [0.96, 0.98, 0.88],
-        rindBase: [0.36, 0.64, 0.25],
-        rindDark: [0.12, 0.32, 0.11],
-        seedBody: [0.14, 0.10, 0.06],
-        seedRim: [0.38, 0.26, 0.14],
-        shadowTint: [0.24, 0.22, 0.18],
-        causticTint: [0.92, 0.64, 0.14]
+        fleshBase: [0.98, 0.70, 0.16, 0.06],
+        fleshAbsorption: [0.10, 0.45, 2.40, 1.34],
+        pithColor: [0.96, 0.95, 0.90, 0.0],
+        rindBase: [0.24, 0.65, 0.32, 0.0],
+        rindDark: [0.08, 0.26, 0.12, 0.0],
+        shadowTint: [0.54, 0.46, 0.36, 0.80],
+        causticTint: [0.95, 0.70, 0.12, 0.70]
       },
       midnight: {
-        name: "Black Diamond",
+        name: "Midnight Black Diamond",
         accent: "#8E0A2B",
-        fleshBase: [0.72, 0.06, 0.22],
-        fleshAbsorption: [0.65, 2.40, 2.10],
-        pithColor: [0.94, 0.86, 0.88],
-        rindBase: [0.14, 0.32, 0.18],
-        rindDark: [0.04, 0.12, 0.06],
-        seedBody: [0.06, 0.05, 0.05],
-        seedRim: [0.18, 0.12, 0.12],
-        shadowTint: [0.20, 0.16, 0.18],
-        causticTint: [0.68, 0.08, 0.20]
+        fleshBase: [0.65, 0.05, 0.20, 0.06],
+        fleshAbsorption: [0.18, 2.40, 1.70, 1.34],
+        pithColor: [0.90, 0.86, 0.87, 0.0],
+        rindBase: [0.12, 0.35, 0.18, 0.0],
+        rindDark: [0.04, 0.12, 0.06, 0.0],
+        shadowTint: [0.46, 0.38, 0.40, 0.80],
+        causticTint: [0.75, 0.04, 0.18, 0.70]
       }
     };
 
     let currentPreset = PRESETS.ruby;
 
     // ── SOFT-BODY XPBD ENGINE & WATERMELON GEOMETRY ──
-    const Nu = 7;   // Radial: apex (0) to rind (Nu-1)
+    const Nu = 7;   // Radial rings: apex (0) to outer rind (Nu-1)
     const Nv = 11;  // Sector angle: left cut (0) to right cut (Nv-1)
-    const Nw = 5;   // Thickness: back face (0) to front face (Nw-1)
-    const numVerts = Nu * Nv * Nw; // 385
+    const Nw = 5;   // Thickness layers: back face (0) to front face (Nw-1)
+    const numVerts = Nu * Nv * Nw; // 385 vertices
 
     const R_max = 2.45;
-    const R_min = 0.22;
-    const theta_max = 35.0 * Math.PI / 180.0;
-    const H_z = 0.62;
-    const Y_center = 2.48;
-    const FLOOR_Y = 0.0;
+    const R_min = 0.24;
+    const theta_max = 34.0 * Math.PI / 180.0;
+    const H_z = 0.58;
+    const Y_center = 2.42;
+    const FLOOR_Y = 0.012;
 
     function getGridIndex(iu, iv, iw) {
       return iu * (Nv * Nw) + iv * Nw + iw;
@@ -1042,9 +1058,10 @@
     const vel = new Float32Array(numVerts * 3);
     const invMass = new Float32Array(numVerts);
     const isRindVertex = new Uint8Array(numVerts);
+    const isBaseVertex = new Uint8Array(numVerts);
     const vertUV = new Float32Array(numVerts * 2);
 
-    // Generate rest coordinates with soft rounded corners
+    // Generate rest coordinates with soft rounded corners and stable resting base
     for (let iu = 0; iu < Nu; iu++) {
       const u = iu / (Nu - 1);
       const r = R_min + u * (R_max - R_min);
@@ -1055,17 +1072,26 @@
           const w = (iw / (Nw - 1)) * 2.0 - 1.0;
           const i = getGridIndex(iu, iv, iw);
 
-          const edge_u = Math.min(u, 1.0 - u);
-          const edge_v = 1.0 - Math.abs(v);
+          // Subtle organic pillow bulge on cut sides
+          const pillow = (1.0 - u * 0.75) * (1.0 - v * v * 0.55) * 0.055;
 
           let x = r * Math.sin(angle);
           let y = Y_center - r * Math.cos(angle);
-          let z = w * H_z * (1.0 - 0.06 * (w * w) * (1.0 - edge_u * edge_v));
+          let z = w * H_z * (1.0 - 0.04 * (w * w)) + (w > 0 ? pillow : -pillow);
 
-          // Soften the apex
-          if (u < 0.2) {
-            const apexFactor = (0.2 - u) / 0.2;
-            y -= apexFactor * 0.04;
+          // Flatten resting table footprint for proud, stable standing posture
+          const isBase = (u > 0.88 && Math.abs(v) < 0.48);
+          if (isBase) {
+            y = Math.max(y, FLOOR_Y);
+            isBaseVertex[i] = 1;
+          } else {
+            isBaseVertex[i] = 0;
+          }
+
+          // Soft rounded apex tip
+          if (u < 0.20) {
+            const apexFactor = (0.20 - u) / 0.20;
+            y -= apexFactor * 0.038;
           }
 
           posRest[i * 3 + 0] = x;
@@ -1080,11 +1106,10 @@
           posPrev[i * 3 + 1] = y;
           posPrev[i * 3 + 2] = z;
 
-          // Mass and stiffness distribution
-          // Rind is heavier and stiffer
-          const isRind = (u > 0.82 || (u > 0.70 && Math.abs(v) > 0.88));
+          // Mass & firmness distribution: outer rind is firmer (lower inverse mass)
+          const isRind = (u > 0.82 || (u > 0.68 && Math.abs(v) > 0.88));
           isRindVertex[i] = isRind ? 1 : 0;
-          invMass[i] = isRind ? 0.75 : 1.15;
+          invMass[i] = isRind ? 0.60 : 1.0;
 
           vertUV[i * 2 + 0] = u;
           vertUV[i * 2 + 1] = v;
@@ -1108,7 +1133,6 @@
       return (d1x * cx + d1y * cy + d1z * cz) / 6.0;
     }
 
-    // Decomposition of each hex cell into 6 positively oriented tetrahedra
     const rawTetTemplates = [
       [0, 1, 3, 7],
       [0, 5, 1, 7],
@@ -1206,96 +1230,119 @@
       initialTotalVolume += tetRestVol[t];
     }
 
-    // ── BOUNDARY SURFACE EXTRACTION ──
-    const boundaryTris = [];
-    const boundaryVertLayer = new Float32Array(numVerts); // 0 = flesh/cut, 1 = curved rind
+    // ── DEDICATED SURFACE RENDERING MESH (FACE-SPLIT ATTRIBUTES) ──
+    // Separate vertices per face prevent normal distortion and eliminate green stripe bleed on cut faces!
+    const surfaceVerts = [];
+    const surfaceIndices = [];
+    let surfaceVertCount = 0;
 
-    // Front face (iw = Nw - 1, z > 0)
+    function addFaceQuad(p00, p10, p11, p01, layer) {
+      const idx0 = surfaceVertCount++;
+      const idx1 = surfaceVertCount++;
+      const idx2 = surfaceVertCount++;
+      const idx3 = surfaceVertCount++;
+
+      surfaceVerts.push(
+        { pIdx: p00, layer },
+        { pIdx: p10, layer },
+        { pIdx: p11, layer },
+        { pIdx: p01, layer }
+      );
+
+      // Two triangles: (0, 1, 2) and (0, 2, 3)
+      surfaceIndices.push(idx0, idx1, idx2, idx0, idx2, idx3);
+    }
+
+    // 1. Front cut face (iw = Nw - 1, layer = 0.0)
     for (let iu = 0; iu < Nu - 1; iu++) {
       for (let iv = 0; iv < Nv - 1; iv++) {
         const p00 = getGridIndex(iu, iv, Nw - 1);
         const p10 = getGridIndex(iu + 1, iv, Nw - 1);
         const p11 = getGridIndex(iu + 1, iv + 1, Nw - 1);
         const p01 = getGridIndex(iu, iv + 1, Nw - 1);
-        boundaryTris.push(p00, p10, p11, p00, p11, p01);
+        addFaceQuad(p00, p10, p11, p01, 0.0);
       }
     }
 
-    // Back face (iw = 0, z < 0)
+    // 2. Back cut face (iw = 0, layer = 0.0)
     for (let iu = 0; iu < Nu - 1; iu++) {
       for (let iv = 0; iv < Nv - 1; iv++) {
         const p00 = getGridIndex(iu, iv, 0);
         const p10 = getGridIndex(iu + 1, iv, 0);
         const p11 = getGridIndex(iu + 1, iv + 1, 0);
         const p01 = getGridIndex(iu, iv + 1, 0);
-        boundaryTris.push(p00, p11, p10, p00, p01, p11);
+        addFaceQuad(p00, p01, p11, p10, 0.0);
       }
     }
 
-    // Bottom rind face (iu = Nu - 1)
+    // 3. Curved outer rind face (iu = Nu - 1, layer = 1.0 -> Rind stripes!)
     for (let iv = 0; iv < Nv - 1; iv++) {
       for (let iw = 0; iw < Nw - 1; iw++) {
         const p00 = getGridIndex(Nu - 1, iv, iw);
         const p10 = getGridIndex(Nu - 1, iv + 1, iw);
         const p11 = getGridIndex(Nu - 1, iv + 1, iw + 1);
         const p01 = getGridIndex(Nu - 1, iv, iw + 1);
-        boundaryTris.push(p00, p10, p11, p00, p11, p01);
-        boundaryVertLayer[p00] = 1.0;
-        boundaryVertLayer[p10] = 1.0;
-        boundaryVertLayer[p11] = 1.0;
-        boundaryVertLayer[p01] = 1.0;
+        addFaceQuad(p00, p10, p11, p01, 1.0);
       }
     }
 
-    // Top apex face (iu = 0)
+    // 4. Apex top face (iu = 0, layer = 0.0)
     for (let iv = 0; iv < Nv - 1; iv++) {
       for (let iw = 0; iw < Nw - 1; iw++) {
         const p00 = getGridIndex(0, iv, iw);
         const p10 = getGridIndex(0, iv + 1, iw);
         const p11 = getGridIndex(0, iv + 1, iw + 1);
         const p01 = getGridIndex(0, iv, iw + 1);
-        boundaryTris.push(p00, p11, p10, p00, p01, p11);
+        addFaceQuad(p00, p01, p11, p10, 0.0);
       }
     }
 
-    // Left cut face (iv = 0)
+    // 5. Left cut face (iv = 0, layer = 0.0)
     for (let iu = 0; iu < Nu - 1; iu++) {
       for (let iw = 0; iw < Nw - 1; iw++) {
         const p00 = getGridIndex(iu, 0, iw);
         const p10 = getGridIndex(iu + 1, 0, iw);
         const p11 = getGridIndex(iu + 1, 0, iw + 1);
         const p01 = getGridIndex(iu, 0, iw + 1);
-        boundaryTris.push(p00, p10, p11, p00, p11, p01);
+        addFaceQuad(p00, p10, p11, p01, 0.0);
       }
     }
 
-    // Right cut face (iv = Nv - 1)
+    // 6. Right cut face (iv = Nv - 1, layer = 0.0)
     for (let iu = 0; iu < Nu - 1; iu++) {
       for (let iw = 0; iw < Nw - 1; iw++) {
         const p00 = getGridIndex(iu, Nv - 1, iw);
         const p10 = getGridIndex(iu + 1, Nv - 1, iw);
         const p11 = getGridIndex(iu + 1, Nv - 1, iw + 1);
         const p01 = getGridIndex(iu, Nv - 1, iw + 1);
-        boundaryTris.push(p00, p11, p10, p00, p01, p11);
+        addFaceQuad(p00, p01, p11, p10, 0.0);
       }
     }
 
-    const boundaryIndices = new Uint16Array(boundaryTris);
-    const numBoundaryTris = boundaryIndices.length / 3;
+    const numRenderVerts = surfaceVerts.length; // 1,984
+    const renderIndices = new Uint16Array(surfaceIndices);
+    const numRenderTris = renderIndices.length / 3;
 
-    // Normal accumulation buffers
-    const vertNormals = new Float32Array(numVerts * 3);
+    const renderNormals = new Float32Array(numRenderVerts * 3);
+    const renderBufferData = new Float32Array(numRenderVerts * 9); // pos (3), normal (3), uv (2), layer (1)
 
-    function updateSurfaceNormals() {
-      vertNormals.fill(0);
-      for (let t = 0; t < numBoundaryTris; t++) {
-        const i0 = boundaryIndices[t * 3 + 0];
-        const i1 = boundaryIndices[t * 3 + 1];
-        const i2 = boundaryIndices[t * 3 + 2];
+    function updateSurfaceGeometry() {
+      // 1. Reset normals
+      renderNormals.fill(0);
 
-        const x0 = pos[i0 * 3], y0 = pos[i0 * 3 + 1], z0 = pos[i0 * 3 + 2];
-        const x1 = pos[i1 * 3], y1 = pos[i1 * 3 + 1], z1 = pos[i1 * 3 + 2];
-        const x2 = pos[i2 * 3], y2 = pos[i2 * 3 + 1], z2 = pos[i2 * 3 + 2];
+      // 2. Accumulate triangle face normals
+      for (let t = 0; t < numRenderTris; t++) {
+        const i0 = renderIndices[t * 3 + 0];
+        const i1 = renderIndices[t * 3 + 1];
+        const i2 = renderIndices[t * 3 + 2];
+
+        const p0 = surfaceVerts[i0].pIdx;
+        const p1 = surfaceVerts[i1].pIdx;
+        const p2 = surfaceVerts[i2].pIdx;
+
+        const x0 = pos[p0 * 3 + 0], y0 = pos[p0 * 3 + 1], z0 = pos[p0 * 3 + 2];
+        const x1 = pos[p1 * 3 + 0], y1 = pos[p1 * 3 + 1], z1 = pos[p1 * 3 + 2];
+        const x2 = pos[p2 * 3 + 0], y2 = pos[p2 * 3 + 1], z2 = pos[p2 * 3 + 2];
 
         const d1x = x1 - x0, d1y = y1 - y0, d1z = z1 - z0;
         const d2x = x2 - x0, d2y = y2 - y0, d2z = z2 - z0;
@@ -1304,51 +1351,63 @@
         const ny = d1z * d2x - d1x * d2z;
         const nz = d1x * d2y - d1y * d2x;
 
-        vertNormals[i0 * 3 + 0] += nx; vertNormals[i0 * 3 + 1] += ny; vertNormals[i0 * 3 + 2] += nz;
-        vertNormals[i1 * 3 + 0] += nx; vertNormals[i1 * 3 + 1] += ny; vertNormals[i1 * 3 + 2] += nz;
-        vertNormals[i2 * 3 + 0] += nx; vertNormals[i2 * 3 + 1] += ny; vertNormals[i2 * 3 + 2] += nz;
+        renderNormals[i0 * 3 + 0] += nx; renderNormals[i0 * 3 + 1] += ny; renderNormals[i0 * 3 + 2] += nz;
+        renderNormals[i1 * 3 + 0] += nx; renderNormals[i1 * 3 + 1] += ny; renderNormals[i1 * 3 + 2] += nz;
+        renderNormals[i2 * 3 + 0] += nx; renderNormals[i2 * 3 + 1] += ny; renderNormals[i2 * 3 + 2] += nz;
       }
 
-      for (let i = 0; i < numVerts; i++) {
-        const nx = vertNormals[i * 3 + 0];
-        const ny = vertNormals[i * 3 + 1];
-        const nz = vertNormals[i * 3 + 2];
+      // 3. Normalize and pack vertex buffer
+      for (let k = 0; k < numRenderVerts; k++) {
+        const pIdx = surfaceVerts[k].pIdx;
+        const layer = surfaceVerts[k].layer;
+
+        let nx = renderNormals[k * 3 + 0];
+        let ny = renderNormals[k * 3 + 1];
+        let nz = renderNormals[k * 3 + 2];
         const len = Math.hypot(nx, ny, nz);
         if (len > 1e-6) {
-          vertNormals[i * 3 + 0] = nx / len;
-          vertNormals[i * 3 + 1] = ny / len;
-          vertNormals[i * 3 + 2] = nz / len;
+          nx /= len; ny /= len; nz /= len;
         } else {
-          vertNormals[i * 3 + 1] = 1.0;
+          ny = 1.0;
         }
+
+        const off = k * 9;
+        renderBufferData[off + 0] = pos[pIdx * 3 + 0];
+        renderBufferData[off + 1] = pos[pIdx * 3 + 1];
+        renderBufferData[off + 2] = pos[pIdx * 3 + 2];
+        renderBufferData[off + 3] = nx;
+        renderBufferData[off + 4] = ny;
+        renderBufferData[off + 5] = nz;
+        renderBufferData[off + 6] = vertUV[pIdx * 2 + 0];
+        renderBufferData[off + 7] = vertUV[pIdx * 2 + 1];
+        renderBufferData[off + 8] = layer;
       }
     }
 
-    updateSurfaceNormals();
+    updateSurfaceGeometry();
 
     // ── INDIVIDUALLY MODELED TEARDROP SEEDS ──
-    // 12 Seeds embedded in exposed flat flesh (6 front, 6 back)
+    // 12 Seeds embedded in exposed cut flesh (6 front, 6 back)
     const seedDefs = [
       // Front face seeds (z > 0)
-      { u: 0.32, v: -0.35, w: 0.82 },
-      { u: 0.34, v: +0.35, w: 0.82 },
-      { u: 0.50, v: -0.52, w: 0.80 },
-      { u: 0.52, v: +0.00, w: 0.80 },
-      { u: 0.50, v: +0.52, w: 0.80 },
-      { u: 0.68, v: -0.22, w: 0.78 },
+      { u: 0.35, v: -0.32, w: 0.96 },
+      { u: 0.36, v: +0.32, w: 0.96 },
+      { u: 0.52, v: -0.48, w: 0.96 },
+      { u: 0.54, v: +0.00, w: 0.96 },
+      { u: 0.52, v: +0.48, w: 0.96 },
+      { u: 0.68, v: -0.22, w: 0.96 },
       // Back face seeds (z < 0)
-      { u: 0.32, v: -0.32, w: -0.82 },
-      { u: 0.35, v: +0.32, w: -0.82 },
-      { u: 0.51, v: -0.48, w: -0.80 },
-      { u: 0.53, v: +0.00, w: -0.80 },
-      { u: 0.51, v: +0.48, w: -0.80 },
-      { u: 0.69, v: +0.22, w: -0.78 },
+      { u: 0.35, v: -0.30, w: -0.96 },
+      { u: 0.37, v: +0.30, w: -0.96 },
+      { u: 0.53, v: -0.46, w: -0.96 },
+      { u: 0.55, v: +0.00, w: -0.96 },
+      { u: 0.53, v: +0.46, w: -0.96 },
+      { u: 0.69, v: +0.22, w: -0.96 },
     ];
 
     const numSeeds = seedDefs.length;
     const seedBindings = [];
 
-    // For each seed, find host tetrahedron and rest barycentric coordinates
     for (let s = 0; s < numSeeds; s++) {
       const sd = seedDefs[s];
       const r = R_min + sd.u * (R_max - R_min);
@@ -1356,7 +1415,7 @@
       const targetPos = [
         r * Math.sin(angle),
         Y_center - r * Math.cos(angle),
-        sd.w * H_z * 0.95
+        sd.w * H_z * 0.94
       ];
 
       // Find closest tet center
@@ -1382,7 +1441,6 @@
       const i2 = tetIndices[bestTet * 4 + 2];
       const i3 = tetIndices[bestTet * 4 + 3];
 
-      // Solve 3x3 for barycentric weights: [p1-p0, p2-p0, p3-p0] * beta = target - p0
       const p0 = [posRest[i0 * 3], posRest[i0 * 3 + 1], posRest[i0 * 3 + 2]];
       const p1 = [posRest[i1 * 3], posRest[i1 * 3 + 1], posRest[i1 * 3 + 2]];
       const p2 = [posRest[i2 * 3], posRest[i2 * 3 + 1], posRest[i2 * 3 + 2]];
@@ -1413,36 +1471,34 @@
         tetIdx: bestTet,
         i0, i1, i2, i3,
         w0, w1, w2, w3,
-        // Natural seed orientation pointing towards apex
+        isFront: sd.w > 0,
         pointDir: [Math.sin(angle), -Math.cos(angle), 0]
       });
     }
 
     // Teardrop seed geometry
     function createSeedMesh() {
-      const rings = 10;
-      const segments = 12;
+      const rings = 12;
+      const segments = 14;
       const positions = [];
       const normals = [];
       const indices = [];
 
       for (let r = 0; r <= rings; r++) {
         const phi = (r / rings) * Math.PI; // 0 (tip) to PI (base)
-        // Teardrop profile: pointed at top (phi=0), bulbous at bottom
-        const radius = Math.sin(phi) * (1.0 + 0.6 * Math.cos(phi)) * 0.055;
-        const y = -(Math.cos(phi) - 0.2) * 0.11;
+        const radius = Math.sin(phi) * (1.0 + 0.65 * Math.cos(phi)) * 0.055;
+        const y = -(Math.cos(phi) - 0.25) * 0.12;
 
         for (let s = 0; s <= segments; s++) {
           const theta = (s / segments) * Math.PI * 2;
           const x = Math.cos(theta) * radius;
-          const z = Math.sin(theta) * radius * 0.45; // Flat oval cross section
+          const z = Math.sin(theta) * radius * 0.38;
 
           positions.push(x, y, z);
 
-          // Normal approximation
           const nx = Math.cos(theta) * Math.sin(phi);
           const ny = Math.cos(phi);
-          const nz = Math.sin(theta) * Math.sin(phi) * 1.5;
+          const nz = Math.sin(theta) * Math.sin(phi) * 1.8;
           const nl = Math.hypot(nx, ny, nz) || 1;
           normals.push(nx / nl, ny / nl, nz / nl);
         }
@@ -1466,7 +1522,7 @@
     }
 
     const seedMesh = createSeedMesh();
-    const seedInstanceTransforms = new Float32Array(16 * 16); // 16 matrices for uniform buffer
+    const seedInstanceTransforms = new Float32Array(16 * 16);
 
     function updateSeedTransforms() {
       for (let s = 0; s < numSeeds; s++) {
@@ -1476,12 +1532,10 @@
         const p2x = pos[b.i2 * 3], p2y = pos[b.i2 * 3 + 1], p2z = pos[b.i2 * 3 + 2];
         const p3x = pos[b.i3 * 3], p3y = pos[b.i3 * 3 + 1], p3z = pos[b.i3 * 3 + 2];
 
-        // Seed 3D position
         const px = b.w0 * p0x + b.w1 * p1x + b.w2 * p2x + b.w3 * p3x;
         const py = b.w0 * p0y + b.w1 * p1y + b.w2 * p2y + b.w3 * p3y;
         const pz = b.w0 * p0z + b.w1 * p1z + b.w2 * p2z + b.w3 * p3z;
 
-        // Current tet orientation vectors
         const ux = p1x - p0x, uy = p1y - p0y, uz = p1z - p0z;
         const vx = p2x - p0x, vy = p2y - p0y, vz = p2z - p0z;
         let nx = uy * vz - uz * vy;
@@ -1490,7 +1544,6 @@
         const nl = Math.hypot(nx, ny, nz) || 1;
         nx /= nl; ny /= nl; nz /= nl;
 
-        // Up vector aligned with seed pointed direction
         let upx = b.pointDir[0], upy = b.pointDir[1], upz = b.pointDir[2];
         let rx = ny * upz - nz * upy;
         let ry = nz * upx - nx * upz;
@@ -1527,42 +1580,32 @@
 
     // ── XPBD SOLVER STEP FUNCTION ──
     let simFirmness = 1.0;
-    let simDamping = 0.07;
+    let simDamping = 0.05;
     let simSlowMotion = false;
     let isPaused = false;
 
     // Grab & interaction state
     let isGrabbed = false;
     let grabVertIdx = -1;
-    let grabHitDist = 0;
-    const grabWeights = new Float32Array(numVerts);
     const grabTargetPos = Vec3.create();
 
     function xpbdStep(dt) {
       if (dt <= 0) return;
 
-      const substeps = 12;
+      const substeps = 15;
       const sdt = dt / substeps;
       const sdt2 = sdt * sdt;
 
-      // Elastic compliance parameters modulated by user Firmness
-      // Distance constraint compliance: lower alpha = stiffer
-      const baseEdgeAlpha = (0.00008 / simFirmness) / sdt2;
-      const rindEdgeAlpha = (0.00002 / simFirmness) / sdt2;
-      // Volume preservation compliance
+      // Physically calibrated compliance parameters
+      const baseEdgeAlpha = (0.00006 / simFirmness) / sdt2;
+      const rindEdgeAlpha = (0.000018 / simFirmness) / sdt2;
       const volAlpha = (0.00004 / simFirmness) / sdt2;
 
       for (let step = 0; step < substeps; step++) {
-        // 1. Explicit integration: predict positions and apply external gravity
+        // 1. Explicit integration: predict positions and apply soft natural gravity
         for (let i = 0; i < numVerts; i++) {
           if (invMass[i] === 0) continue;
-          // Apply gentle downward gravity
-          vel[i * 3 + 1] -= 9.81 * sdt * 0.85;
-
-          // Drag / air damping
-          vel[i * 3 + 0] *= (1.0 - 0.008);
-          vel[i * 3 + 1] *= (1.0 - 0.008);
-          vel[i * 3 + 2] *= (1.0 - 0.008);
+          vel[i * 3 + 1] -= 9.81 * sdt * 0.65;
 
           posPrev[i * 3 + 0] = pos[i * 3 + 0];
           posPrev[i * 3 + 1] = pos[i * 3 + 1];
@@ -1573,25 +1616,12 @@
           pos[i * 3 + 2] += vel[i * 3 + 2] * sdt;
         }
 
-        // 2. User interactive grab constraint
+        // 2. Interactive compliant grab constraint
         if (isGrabbed && grabVertIdx >= 0) {
-          for (let i = 0; i < numVerts; i++) {
-            const w = grabWeights[i];
-            if (w > 0.001) {
-              const pullStrength = w * 0.85;
-              const ox = posRest[i * 3] - posRest[grabVertIdx * 3];
-              const oy = posRest[i * 3 + 1] - posRest[grabVertIdx * 3 + 1];
-              const oz = posRest[i * 3 + 2] - posRest[grabVertIdx * 3 + 2];
-
-              const tx = grabTargetPos[0] + ox;
-              const ty = grabTargetPos[1] + oy;
-              const tz = grabTargetPos[2] + oz;
-
-              pos[i * 3 + 0] += (tx - pos[i * 3 + 0]) * pullStrength;
-              pos[i * 3 + 1] += (ty - pos[i * 3 + 1]) * pullStrength;
-              pos[i * 3 + 2] += (tz - pos[i * 3 + 2]) * pullStrength;
-            }
-          }
+          const pullFactor = 0.24 * simFirmness;
+          pos[grabVertIdx * 3 + 0] += (grabTargetPos[0] - pos[grabVertIdx * 3 + 0]) * pullFactor;
+          pos[grabVertIdx * 3 + 1] += (grabTargetPos[1] - pos[grabVertIdx * 3 + 1]) * pullFactor;
+          pos[grabVertIdx * 3 + 2] += (grabTargetPos[2] - pos[grabVertIdx * 3 + 2]) * pullFactor;
         }
 
         // 3. Solve XPBD distance constraints
@@ -1623,7 +1653,7 @@
           pos[i2 * 3 + 2] -= dz * corr * w2;
         }
 
-        // 4. Solve XPBD tetrahedral volume constraints
+        // 4. Solve XPBD tetrahedral volume preservation constraints
         for (let t = 0; t < numTets; t++) {
           const i0 = tetIndices[t * 4 + 0];
           const i1 = tetIndices[t * 4 + 1];
@@ -1641,29 +1671,29 @@
           const d2x = p2x - p0x, d2y = p2y - p0y, d2z = p2z - p0z;
           const d3x = p3x - p0x, d3y = p3y - p0y, d3z = p3z - p0z;
 
-          // Gradient vectors
-          // g1 = (p2 - p0) x (p3 - p0) / 6
           const g1x = (d2y * d3z - d2z * d3y) / 6.0;
           const g1y = (d2z * d3x - d2x * d3z) / 6.0;
           const g1z = (d2x * d3y - d2y * d3x) / 6.0;
 
-          // g2 = (p3 - p0) x (p1 - p0) / 6
           const g2x = (d3y * d1z - d3z * d1y) / 6.0;
           const g2y = (d3z * d1x - d3x * d1z) / 6.0;
           const g2z = (d3x * d1y - d3y * d1x) / 6.0;
 
-          // g3 = (p1 - p0) x (p2 - p0) / 6
           const g3x = (d1y * d2z - d1z * d2y) / 6.0;
           const g3y = (d1z * d2x - d1x * d2z) / 6.0;
           const g3z = (d1x * d2y - d1y * d2x) / 6.0;
 
-          // g0 = -(g1 + g2 + g3)
           const g0x = -(g1x + g2x + g3x);
           const g0y = -(g1y + g2y + g3y);
           const g0z = -(g1z + g2z + g3z);
 
           const currentVol = (d1x * (d2y * d3z - d2z * d3y) + d1y * (d2z * d3x - d2x * d3z) + d1z * (d2x * d3y - d2y * d3x)) / 6.0;
-          const C = currentVol - tetRestVol[t];
+          let C = currentVol - tetRestVol[t];
+
+          // Anti-inversion protection: strongly restore collapsed or inverted tets
+          if (currentVol < tetRestVol[t] * 0.20) {
+            C = currentVol - tetRestVol[t] * 0.50;
+          }
 
           const denom = w0 * (g0x*g0x + g0y*g0y + g0z*g0z) +
                         w1 * (g1x*g1x + g1y*g1y + g1z*g1z) +
@@ -1690,39 +1720,55 @@
           }
         }
 
-        // 5. Floor unilateral contact constraint & friction
+        // 5. Floor contact with true Coulomb static and kinetic friction
         for (let i = 0; i < numVerts; i++) {
-          if (pos[i * 3 + 1] < FLOOR_Y) {
+          const pen = FLOOR_Y - pos[i * 3 + 1];
+          if (pen >= 0) {
             pos[i * 3 + 1] = FLOOR_Y;
-            // Floor friction
-            pos[i * 3 + 0] = posPrev[i * 3 + 0] + (pos[i * 3 + 0] - posPrev[i * 3 + 0]) * 0.72;
-            pos[i * 3 + 2] = posPrev[i * 3 + 2] + (pos[i * 3 + 2] - posPrev[i * 3 + 2]) * 0.72;
+
+            const dx = pos[i * 3 + 0] - posPrev[i * 3 + 0];
+            const dz = pos[i * 3 + 2] - posPrev[i * 3 + 2];
+            const slipDist = Math.hypot(dx, dz);
+
+            const muStatic = isBaseVertex[i] ? 0.95 : 0.70;
+            const muKinetic = 0.45;
+
+            if (slipDist < pen * muStatic + 0.0005) {
+              // Static stick friction
+              pos[i * 3 + 0] = posPrev[i * 3 + 0];
+              pos[i * 3 + 2] = posPrev[i * 3 + 2];
+            } else {
+              // Kinetic Coulomb friction
+              const frictionDist = Math.min(slipDist, pen * muKinetic + 0.002);
+              const scale = (slipDist - frictionDist) / (slipDist + 1e-6);
+              pos[i * 3 + 0] = posPrev[i * 3 + 0] + dx * scale;
+              pos[i * 3 + 2] = posPrev[i * 3 + 2] + dz * scale;
+            }
           }
         }
 
-        // 6. Update velocities and internal dissipation
+        // 6. Update velocities with Kelvin-Voigt internal damping
         const invSdt = 1.0 / sdt;
-        const dampFactor = Math.max(0.0, 1.0 - simDamping * 1.8);
+        // Substep damping calibrated for natural, juicy wobbles settling over ~2s
+        const subDamp = Math.max(0.992, 0.9992 - simDamping * 0.025);
 
         for (let i = 0; i < numVerts; i++) {
-          vel[i * 3 + 0] = (pos[i * 3 + 0] - posPrev[i * 3 + 0]) * invSdt * dampFactor;
-          vel[i * 3 + 1] = (pos[i * 3 + 1] - posPrev[i * 3 + 1]) * invSdt * dampFactor;
-          vel[i * 3 + 2] = (pos[i * 3 + 2] - posPrev[i * 3 + 2]) * invSdt * dampFactor;
+          vel[i * 3 + 0] = (pos[i * 3 + 0] - posPrev[i * 3 + 0]) * invSdt * subDamp;
+          vel[i * 3 + 1] = (pos[i * 3 + 1] - posPrev[i * 3 + 1]) * invSdt * subDamp;
+          vel[i * 3 + 2] = (pos[i * 3 + 2] - posPrev[i * 3 + 2]) * invSdt * subDamp;
         }
       }
     }
 
     function applyNudge() {
-      // Delivers a dynamic sideways & vertical impulse to the upper flesh and apex
+      // Delivers an asymmetrical dynamic impulse that sends wobbly transverse waves through the jelly
       for (let i = 0; i < numVerts; i++) {
         const u = vertUV[i * 2 + 0];
         const v = vertUV[i * 2 + 1];
-        if (u < 0.6) {
-          const impulse = (0.6 - u) * 4.2;
-          vel[i * 3 + 0] += (Math.random() - 0.45) * impulse * 1.5;
-          vel[i * 3 + 1] += impulse * 0.8;
-          vel[i * 3 + 2] += (Math.sin(v * 4.0)) * impulse * 1.2;
-        }
+        const h = (1.0 - u * 0.70);
+        vel[i * 3 + 0] += (Math.sin(v * 3.5 + 1.2) * 2.2 + 1.0) * h;
+        vel[i * 3 + 1] += Math.abs(Math.cos(u * 4.0)) * 1.4 * h;
+        vel[i * 3 + 2] += Math.cos(v * 4.5) * 2.6 * h;
       }
     }
 
@@ -1746,18 +1792,33 @@
 
     // ── WGSL SHADERS ──
 
-    // Shader 1: Back-Face Reprojection Pass (calculates depth & world thickness)
+    // Shader 1: Back-Face Depth & World Position Pass
     const backFaceShaderCode = /* wgsl */`
       struct Uniforms {
         viewProj: mat4x4<f32>,
-        model: mat4x4<f32>,
-        cameraPos: vec3<f32>,
-        time: f32,
+        invViewProj: mat4x4<f32>,
+        cameraPos: vec4<f32>,
+        screenParams: vec4<f32>,
+        fleshBase: vec4<f32>,
+        fleshAbsorption: vec4<f32>,
+        pithColor: vec4<f32>,
+        rindBase: vec4<f32>,
+        rindDark: vec4<f32>,
+        shadowTint: vec4<f32>,
+        causticTint: vec4<f32>,
+        sliceBounds: vec4<f32>,
+        sliceCenter: vec4<f32>,
+        lightKey: vec4<f32>,
+        lightFill: vec4<f32>,
+        lightRim: vec4<f32>,
       };
       @group(0) @binding(0) var<uniform> u: Uniforms;
 
       struct VertexInput {
         @location(0) position: vec3<f32>,
+        @location(1) normal: vec3<f32>,
+        @location(2) uv: vec2<f32>,
+        @location(3) layer: f32,
       };
 
       struct VertexOutput {
@@ -1779,47 +1840,102 @@
       }
     `;
 
-    // Shader 2: Main Scene (Floor sweep, front-face jelly, refraction, Beer-Lambert, Fresnel, stripes)
+    // Shader 2: Main Scene Shaders (Cyclorama Sweep, Translucent Jelly, Seeds, Wireframe, Screen Blit)
     const mainShaderCode = /* wgsl */`
       struct Uniforms {
         viewProj: mat4x4<f32>,
         invViewProj: mat4x4<f32>,
-        cameraPos: vec3<f32>,
-        time: f32,
-        screenSize: vec2<f32>,
-        firmness: f32,
-        padding0: f32,
-        // Material Preset
-        fleshBase: vec3<f32>,
-        padding1: f32,
-        fleshAbsorption: vec3<f32>,
-        padding2: f32,
-        pithColor: vec3<f32>,
-        padding3: f32,
-        rindBase: vec3<f32>,
-        padding4: f32,
-        rindDark: vec3<f32>,
-        padding5: f32,
-        shadowTint: vec3<f32>,
-        padding6: f32,
-        causticTint: vec3<f32>,
-        padding7: f32,
-        // Slice bottom contact points for dynamic floor shadow
+        cameraPos: vec4<f32>,
+        screenParams: vec4<f32>, // w, h, firmness, damping
+        fleshBase: vec4<f32>,
+        fleshAbsorption: vec4<f32>,
+        pithColor: vec4<f32>,
+        rindBase: vec4<f32>,
+        rindDark: vec4<f32>,
+        shadowTint: vec4<f32>,
+        causticTint: vec4<f32>,
         sliceBounds: vec4<f32>, // minX, maxX, minZ, maxZ
         sliceCenter: vec4<f32>, // cx, cy, cz, minY
+        lightKey: vec4<f32>,
+        lightFill: vec4<f32>,
+        lightRim: vec4<f32>,
       };
 
       @group(0) @binding(0) var<uniform> u: Uniforms;
       @group(0) @binding(1) var backPosTex: texture_2d<f32>;
+      @group(0) @binding(2) var sceneTex: texture_2d<f32>;
 
-      struct VertexInput {
+      // ── CYCLORAMA BACKDROP & STUDIO FLOOR ──
+      struct CycVertexOutput {
+        @builtin(position) clipPos: vec4<f32>,
+        @location(0) worldRay: vec3<f32>,
+      };
+
+      @vertex
+      fn vs_cyc(@builtin(vertex_index) vertexIdx: u32) -> CycVertexOutput {
+        var out: CycVertexOutput;
+        let x = f32((vertexIdx << 1u) & 2u) * 2.0 - 1.0;
+        let y = f32(vertexIdx & 2u) * 2.0 - 1.0;
+        out.clipPos = vec4<f32>(x, y, 0.99999, 1.0);
+        let unprojected = u.invViewProj * vec4<f32>(x, y, 1.0, 1.0);
+        out.worldRay = unprojected.xyz / unprojected.w - u.cameraPos.xyz;
+        return out;
+      }
+
+      @fragment
+      fn fs_cyc(in: CycVertexOutput) -> @location(0) vec4<f32> {
+        let rayDir = normalize(in.worldRay);
+        let camPos = u.cameraPos.xyz;
+
+        // Ground plane intersection at Y = 0.0
+        let t = (0.0 - camPos.y) / rayDir.y;
+
+        if (t > 0.0 && rayDir.y < 0.0) {
+          let P_floor = camPos + t * rayDir;
+
+          // Warm studio paper tone #F5F3ED
+          let studioFloorBase = vec3<f32>(0.960, 0.952, 0.932);
+          let distCenter = length(P_floor.xz - u.sliceCenter.xz);
+          let floorVignette = smoothstep(2.0, 9.5, distCenter);
+          var floorCol = mix(studioFloorBase, vec3<f32>(0.925, 0.915, 0.888), floorVignette * 0.45);
+
+          // Dynamic soft multi-lobe contact shadow
+          let sx = clamp(P_floor.x, u.sliceBounds.x, u.sliceBounds.y);
+          let sz = clamp(P_floor.z, u.sliceBounds.z, u.sliceBounds.w);
+          let dSlice = length(vec2<f32>(P_floor.x - sx, P_floor.z - sz));
+
+          let tightAO = exp(-dSlice * dSlice * 8.5) * clamp(1.0 - (u.sliceCenter.w - 0.012) * 9.0, 0.0, 1.0);
+          let softShadow = exp(-dSlice * dSlice * 0.85) * 0.40;
+          let keyOffset = P_floor.xz - (u.sliceCenter.xz - vec2<f32>(0.22, 0.32));
+          let keyShadow = exp(-dot(keyOffset, keyOffset) * 0.70) * 0.30;
+          let totalShadow = clamp(tightAO * 0.65 + softShadow * 0.35 + keyShadow * 0.30, 0.0, 0.88);
+
+          floorCol = mix(floorCol, u.shadowTint.rgb, totalShadow);
+
+          // Translucent Ruby Caustic Pool projected on the table
+          let causticDist = length(P_floor.xz - (u.sliceCenter.xz + vec2<f32>(0.12, 0.18)));
+          let causticRing = exp(-pow(causticDist - 0.60, 2.0) / 0.14) * (1.0 - tightAO);
+          let causticCore = exp(-causticDist * causticDist * 1.4) * 0.35;
+          floorCol += u.causticTint.rgb * (causticRing * 0.55 + causticCore * 0.35);
+
+          return vec4<f32>(floorCol, 1.0);
+        } else {
+          // Seamless cyclorama horizon sweep
+          let horizon = smoothstep(-0.06, 0.45, rayDir.y);
+          let cycCol = mix(vec3<f32>(0.935, 0.925, 0.898), vec3<f32>(0.975, 0.970, 0.962), horizon);
+          return vec4<f32>(cycCol, 1.0);
+        }
+      }
+
+      // ── TRANSLUCENT WATERMELON JELLY (FRONT FACES) ──
+      struct JellyVertexInput {
         @location(0) position: vec3<f32>,
         @location(1) normal: vec3<f32>,
         @location(2) uv: vec2<f32>,
         @location(3) layer: f32,
       };
 
-      struct VertexOutput {
+      struct JellyVertexOutput {
         @builtin(position) clipPos: vec4<f32>,
         @location(0) worldPos: vec3<f32>,
         @location(1) normal: vec3<f32>,
@@ -1828,8 +1944,8 @@
       };
 
       @vertex
-      fn vs_jelly(in: VertexInput) -> VertexOutput {
-        var out: VertexOutput;
+      fn vs_jelly(in: JellyVertexInput) -> JellyVertexOutput {
+        var out: JellyVertexOutput;
         out.worldPos = in.position;
         out.normal = in.normal;
         out.uv = in.uv;
@@ -1839,139 +1955,118 @@
       }
 
       @fragment
-      fn fs_jelly(in: VertexOutput) -> @location(0) vec4<f32> {
+      fn fs_jelly(in: JellyVertexOutput) -> @location(0) vec4<f32> {
+        let V = normalize(u.cameraPos.xyz - in.worldPos);
         let N = normalize(in.normal);
-        let V = normalize(u.cameraPos - in.worldPos);
         let NdotV = max(dot(N, V), 0.0);
 
-        // 1. Thickness evaluation via screen-space back-face buffer
+        // 1. Thickness evaluation via back-face reprojection buffer
         let screenCoord = vec2<i32>(in.clipPos.xy);
         let backData = textureLoad(backPosTex, screenCoord, 0);
-        var thickness = 0.35;
+        var thickness = 0.45;
         if (backData.w > 0.5) {
-          thickness = max(0.03, length(backData.xyz - in.worldPos));
+          thickness = max(0.04, length(backData.xyz - in.worldPos));
         } else {
-          // Silhouette edge falloff approximation
-          thickness = mix(0.12, 0.75, pow(1.0 - abs(dot(N, V)), 0.5));
+          thickness = mix(0.10, 0.65, pow(1.0 - abs(dot(N, V)), 0.6));
         }
 
         let u_rad = in.uv.x;
         let v_ang = in.uv.y;
 
-        // Distinct Material Layers
-        // a) Translucent Ruby Flesh
-        // b) Milky Pale Jade Pith
-        // c) Glossy Green Striped Rind
-        var albedo = u.fleshBase;
-        var opacity = 0.88;
-        var roughness = 0.08;
-        var absorption = u.fleshAbsorption;
+        // 2. Distinct Anatomical Material Layers
+        var albedo = u.fleshBase.rgb;
+        var roughness = 0.06;
+        var absorption = u.fleshAbsorption.rgb;
+        var isMantleRind = false;
+        var isPith = false;
 
-        if (in.layer > 0.5 || u_rad > 0.86) {
-          // Green outer rind with irregular dark green stripes
-          let stripeCoord = v_ang * 12.0 + sin(in.worldPos.z * 5.0) * 0.7 + sin(u_rad * 18.0) * 0.4;
-          let stripe = smoothstep(-0.25, 0.25, sin(stripeCoord) + 0.35 * sin(stripeCoord * 2.2));
-          albedo = mix(u.rindDark, u.rindBase, stripe);
-          roughness = 0.12;
-          opacity = 0.98;
-          absorption = vec3<f32>(1.8, 1.2, 1.6);
-        } else if (u_rad > 0.76) {
-          // Pale translucent pith layer
-          let pithBlend = smoothstep(0.76, 0.86, u_rad);
-          albedo = mix(u.fleshBase * 1.15, u.pithColor, pithBlend);
+        if (in.layer > 0.5) {
+          // Curved outer rind mantle: glossy green with organic wavy dark emerald stripes
+          isMantleRind = true;
+          let stripeCoord = v_ang * 16.0 + sin(in.worldPos.y * 6.0) * 0.9 + sin(in.worldPos.z * 12.0) * 0.5;
+          let stripeWave = sin(stripeCoord) + 0.35 * sin(stripeCoord * 2.3);
+          let stripeMask = smoothstep(-0.25, 0.30, stripeWave);
+          albedo = mix(u.rindDark.rgb, u.rindBase.rgb, stripeMask);
+          roughness = 0.13;
+          absorption = vec3<f32>(2.4, 1.4, 2.0);
+        } else if (u_rad > 0.92) {
+          // Crisp 1.5mm thin green skin border at the extreme edge of cut faces
+          isMantleRind = true;
+          let edgeBlend = smoothstep(0.92, 0.96, u_rad);
+          albedo = mix(u.pithColor.rgb, u.rindBase.rgb * 0.92, edgeBlend);
+          roughness = 0.14;
+        } else if (u_rad > 0.77) {
+          // Pale milky jade / creamy translucent pith layer
+          isPith = true;
+          let pithBlend = smoothstep(0.77, 0.88, u_rad);
+          albedo = mix(u.fleshBase.rgb * 1.12, u.pithColor.rgb, pithBlend);
           roughness = 0.16;
-          opacity = mix(0.85, 0.95, pithBlend);
-          absorption = mix(u.fleshAbsorption, vec3<f32>(0.6, 0.8, 0.6), pithBlend);
+          absorption = mix(u.fleshAbsorption.rgb, vec3<f32>(0.8, 1.0, 0.8), pithBlend);
+        } else {
+          // Pure translucent ruby jelly flesh
+          albedo = u.fleshBase.rgb;
+          roughness = 0.06;
         }
 
-        // Beer-Lambert light attenuation
-        let transmittance = exp(-absorption * thickness * 1.1);
+        // 3. Snell Refraction into Scene Buffer
+        let refrNormal = (N.xy) * (1.0 - 0.75 * abs(N.z));
+        let refrDist = thickness * 38.0;
+        let maxCoord = vec2<i32>(u.screenParams.xy) - vec2<i32>(1);
+        let refrCoord = clamp(screenCoord + vec2<i32>(refrNormal * refrDist), vec2<i32>(0), maxCoord);
+        let backgroundSample = textureLoad(sceneTex, refrCoord, 0).rgb;
 
-        // Studio lighting environment
-        let keyLightDir = normalize(vec3<f32>(1.2, 2.5, 1.8));
-        let fillLightDir = normalize(vec3<f32>(-1.8, 1.2, 1.0));
-        let rimLightDir = normalize(vec3<f32>(-0.4, 0.8, -2.5)); // Strong warm backlight
+        // 4. Physical Beer-Lambert Transmission
+        let transmittance = exp(-absorption * thickness * 1.25);
+        let transmittedBackground = backgroundSample * transmittance;
 
-        let diffKey = max(dot(N, keyLightDir), 0.0);
-        let diffFill = max(dot(N, fillLightDir), 0.0) * 0.45;
+        // 5. Internal Subsurface Scattering & Forward Backlight
+        let rimDir = normalize(u.lightRim.xyz);
+        let backLight = max(0.0, dot(-V, rimDir));
+        let forwardScatter = pow(backLight, 2.2) * exp(-absorption * thickness * 0.45) * 2.8;
+        let internalGlow = albedo * forwardScatter;
 
-        // Subsurface transmitted rim lighting through thin edges
-        let backDot = max(0.0, dot(-V, rimLightDir));
-        let rimTransmitted = pow(backDot, 2.8) * exp(-absorption * thickness * 0.6) * 1.8;
+        // 6. Sparkling Internal Micro-Bubbles
+        let bubblePos = in.worldPos * 16.0;
+        let bubbleNoise = sin(bubblePos.x) * cos(bubblePos.y) * sin(bubblePos.z);
+        let bubbleGlint = pow(max(0.0, bubbleNoise), 24.0) * 0.65;
 
-        // Snell Refraction
-        let refractDir = refract(-V, N, 1.0 / 1.34);
-        let studioFloorCol = vec3<f32>(0.96, 0.95, 0.93);
-        let refractedBackdrop = studioFloorCol * transmittance;
+        // 7. Studio Key & Fill Specular Highlights (Cook-Torrance / GGX)
+        let keyDir = normalize(u.lightKey.xyz);
+        let fillDir = normalize(u.lightFill.xyz);
 
-        // Internal tiny air bubbles sparkle
-        let bubbleP = in.worldPos * 14.0;
-        let bubbleGlitter = pow(max(0.0, sin(bubbleP.x) * cos(bubbleP.y) * sin(bubbleP.z)), 16.0) * (1.0 - roughness) * 0.4;
+        let NdotL_key = max(dot(N, keyDir), 0.0);
+        let NdotL_fill = max(dot(N, fillDir), 0.0);
 
-        // Specular highlights (Cook-Torrance / Blinn-Phong)
-        let H_key = normalize(keyLightDir + V);
-        let specKey = pow(max(dot(N, H_key), 0.0), 38.0 / (roughness + 0.01)) * 0.9;
+        let H_key = normalize(keyDir + V);
+        let NdotH_key = max(dot(N, H_key), 0.0);
+        let specKey = pow(NdotH_key, 64.0 / (roughness + 0.01)) * 1.25;
 
-        let H_fill = normalize(fillLightDir + V);
-        let specFill = pow(max(dot(N, H_fill), 0.0), 22.0) * 0.25;
+        let H_fill = normalize(fillDir + V);
+        let NdotH_fill = max(dot(N, H_fill), 0.0);
+        let specFill = pow(NdotH_fill, 28.0) * 0.35;
 
-        // Schlick Fresnel reflection
+        // 8. Schlick Fresnel reflection
         let F0 = mix(0.045, 0.08, in.layer);
         let fresnel = F0 + (1.0 - F0) * pow(1.0 - NdotV, 5.0);
 
-        // Composite transmitted gummy core + surface reflection
-        let diffuseTerm = albedo * (diffKey * 0.6 + diffFill + 0.15);
-        let internalJelly = mix(diffuseTerm, refractedBackdrop * albedo * 1.25, 0.55) + rimTransmitted * albedo * 1.4;
+        // 9. Composite Layers
+        var interior = transmittedBackground + internalGlow;
+        if (isMantleRind) {
+          let diffuseRind = albedo * (NdotL_key * 0.65 + NdotL_fill * 0.35 + 0.15);
+          interior = diffuseRind;
+        } else if (isPith) {
+          let diffusePith = albedo * (NdotL_key * 0.55 + 0.30);
+          interior = mix(interior, diffusePith, 0.72);
+        }
 
-        let finalCol = mix(internalJelly, vec3<f32>(1.0, 1.0, 1.0), fresnel * 0.65) + vec3<f32>(specKey + specFill + bubbleGlitter);
+        let studioReflect = vec3<f32>(1.0, 0.99, 0.97);
+        let surfaceColor = mix(interior, studioReflect, fresnel * 0.75);
+        let finalColor = surfaceColor + vec3<f32>(specKey + specFill + bubbleGlint);
 
-        return vec4<f32>(finalCol, 1.0);
+        return vec4<f32>(finalColor, 1.0);
       }
 
-      // Studio Floor Quad
-      struct FloorVertexOutput {
-        @builtin(position) clipPos: vec4<f32>,
-        @location(0) worldPos: vec3<f32>,
-      };
-
-      @vertex
-      fn vs_floor(@location(0) position: vec3<f32>) -> FloorVertexOutput {
-        var out: FloorVertexOutput;
-        out.worldPos = position;
-        out.clipPos = u.viewProj * vec4<f32>(position, 1.0);
-        return out;
-      }
-
-      @fragment
-      fn fs_floor(in: FloorVertexOutput) -> @location(0) vec4<f32> {
-        let p = in.worldPos.xz;
-        let distCenter = length(p - u.sliceCenter.xz);
-
-        // Infinite studio floor tone: warm neutral paper #F4F2EC
-        let studioBase = vec3<f32>(0.957, 0.949, 0.925);
-        let studioEdge = vec3<f32>(0.932, 0.920, 0.895);
-        var floorColor = mix(studioBase, studioEdge, smoothstep(2.5, 9.0, distCenter));
-
-        // Dynamic soft contact shadow beneath the watermelon slice
-        let sx = clamp(p.x, u.sliceBounds.x, u.sliceBounds.y);
-        let sz = clamp(p.y, u.sliceBounds.z, u.sliceBounds.w);
-        let distToSlice = length(vec2<f32>(p.x - sx, p.y - sz));
-
-        let heightAboveFloor = max(0.01, u.sliceCenter.w);
-        let shadowTight = exp(-distToSlice * distToSlice * 5.5 / (heightAboveFloor * 0.6 + 0.08));
-        let shadowBroad = exp(-distCenter * distCenter * 0.55 / (heightAboveFloor + 0.4)) * 0.35;
-        let shadowTotal = clamp(shadowTight * 0.72 + shadowBroad * 0.28, 0.0, 0.85);
-
-        // Soft reddish caustic fringe around the jelly contact area
-        let causticFringe = smoothstep(0.12, 0.55, distToSlice) * (1.0 - smoothstep(0.55, 1.15, distToSlice)) * shadowTight * 0.45;
-
-        floorColor = mix(floorColor, u.shadowTint * 0.85, shadowTotal);
-        floorColor += u.causticTint * causticFringe;
-
-        return vec4<f32>(floorColor, 1.0);
-      }
-
-      // Seed Mesh Pipeline
+      // ── EMBEDDED TEARDROP SEEDS ──
       struct SeedVertexInput {
         @location(0) position: vec3<f32>,
         @location(1) normal: vec3<f32>,
@@ -1993,31 +2088,33 @@
         out.worldPos = wPos;
         out.normal = normalize((model * vec4<f32>(in.normal, 0.0)).xyz);
         out.clipPos = u.viewProj * vec4<f32>(wPos, 1.0);
+        // Subtle depth bias for clean embedding on cut surface
+        out.clipPos.z -= 0.0004;
         return out;
       }
 
       @fragment
       fn fs_seed(in: SeedVertexOutput) -> @location(0) vec4<f32> {
         let N = normalize(in.normal);
-        let V = normalize(u.cameraPos - in.worldPos);
+        let V = normalize(u.cameraPos.xyz - in.worldPos);
         let NdotV = max(dot(N, V), 0.0);
 
-        let keyDir = normalize(vec3<f32>(1.2, 2.5, 1.8));
+        let keyDir = normalize(u.lightKey.xyz);
         let diff = max(dot(N, keyDir), 0.0);
 
         let H = normalize(keyDir + V);
-        // Ultra glossy obsidian seed lacquer highlight
-        let spec = pow(max(dot(N, H), 0.0), 64.0) * 1.2;
+        // Shiny lacquer watermelon seed specular highlight
+        let spec = pow(max(dot(N, H), 0.0), 72.0) * 1.45;
 
-        let seedBody = vec3<f32>(0.08, 0.06, 0.06);
-        let seedRim = vec3<f32>(0.32, 0.18, 0.12);
+        let seedBody = vec3<f32>(0.07, 0.05, 0.05);
+        let seedRim = vec3<f32>(0.36, 0.22, 0.16);
 
-        let rim = pow(1.0 - NdotV, 3.5) * 0.45;
-        let col = seedBody * (diff * 0.7 + 0.3) + seedRim * rim + vec3<f32>(spec);
+        let rim = pow(1.0 - NdotV, 3.2) * 0.55;
+        let col = seedBody * (diff * 0.75 + 0.25) + seedRim * rim + vec3<f32>(spec);
         return vec4<f32>(col, 1.0);
       }
 
-      // Wireframe Mesh Pipeline
+      // ── WIREFRAME OVERLAY ──
       struct WireVertexInput {
         @location(0) position: vec3<f32>,
       };
@@ -2030,14 +2127,38 @@
       fn vs_wire(in: WireVertexInput) -> WireVertexOutput {
         var out: WireVertexOutput;
         out.clipPos = u.viewProj * vec4<f32>(in.position, 1.0);
-        // Slight depth bias to prevent z-fighting
-        out.clipPos.z -= 0.0008;
+        out.clipPos.z -= 0.0012;
         return out;
       }
 
       @fragment
       fn fs_wire(in: WireVertexOutput) -> @location(0) vec4<f32> {
-        return vec4<f32>(0.15, 0.12, 0.12, 0.38);
+        return vec4<f32>(0.20, 0.16, 0.16, 0.45);
+      }
+
+    `;
+
+    // Shader 3: Fullscreen Blit Shader (for copying scene buffer to screen)
+    const blitShaderCode = /* wgsl */`
+      @group(0) @binding(0) var sceneTex: texture_2d<f32>;
+
+      struct BlitVertexOutput {
+        @builtin(position) clipPos: vec4<f32>,
+      };
+
+      @vertex
+      fn vs_blit(@builtin(vertex_index) vertexIdx: u32) -> BlitVertexOutput {
+        var out: BlitVertexOutput;
+        let x = f32((vertexIdx << 1u) & 2u) * 2.0 - 1.0;
+        let y = f32(vertexIdx & 2u) * 2.0 - 1.0;
+        out.clipPos = vec4<f32>(x, y, 0.99999, 1.0);
+        return out;
+      }
+
+      @fragment
+      fn fs_blit(in: BlitVertexOutput) -> @location(0) vec4<f32> {
+        let coord = vec2<i32>(in.clipPos.xy);
+        return textureLoad(sceneTex, coord, 0);
       }
     `;
 
@@ -2089,7 +2210,6 @@
         document.getElementById('specimen-panel').style.pointerEvents = "none";
       }
 
-      // Handle device loss and recovery (rebuild up to twice)
       device.lost.then((info) => {
         console.warn("WebGPU device lost:", info.message, info.reason);
         if (info.reason !== 'destroyed' && recoveryAttempts < 2) {
@@ -2107,17 +2227,24 @@
 
       const ctx = canvas.getContext('webgpu');
       const canvasFormat = navigator.gpu.getPreferredCanvasFormat();
+
+      const rect = canvas.getBoundingClientRect();
+      const initialW = Math.max(800, Math.floor((rect.width || 800) * window.devicePixelRatio));
+      const initialH = Math.max(600, Math.floor((rect.height || 600) * window.devicePixelRatio));
+      canvas.width = initialW;
+      canvas.height = initialH;
+
       ctx.configure({
         device,
         format: canvasFormat,
-        alphaMode: 'opaque'
+        alphaMode: 'premultiplied'
       });
 
       // Compile WGSL Shaders
       const backShaderModule = device.createShaderModule({ code: backFaceShaderCode });
       const mainShaderModule = device.createShaderModule({ code: mainShaderCode });
+      const blitShaderModule = device.createShaderModule({ code: blitShaderCode });
 
-      // Check compilation info
       const backInfo = await backShaderModule.getCompilationInfo();
       const mainInfo = await mainShaderModule.getCompilationInfo();
       for (const m of [...backInfo.messages, ...mainInfo.messages]) {
@@ -2127,43 +2254,24 @@
       }
 
       // ── BUFFERS & GEOMETRY REUSE ──
-      // Dynamic vertex buffer for watermelon jelly: positions, normals, uv, layer
-      // 385 verts * (3 + 3 + 2 + 1) floats = 385 * 9 = 3,465 floats = 13,860 bytes
-      const vertexStride = 9 * 4; // 36 bytes
-      const vertexBufferData = new Float32Array(numVerts * 9);
+      const vertexStride = 9 * 4; // 36 bytes: pos(3), norm(3), uv(2), layer(1)
 
       const jellyVertexBuffer = device.createBuffer({
-        size: vertexBufferData.byteLength,
+        size: renderBufferData.byteLength,
         usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST
       });
 
       const jellyIndexBuffer = device.createBuffer({
-        size: boundaryIndices.byteLength,
+        size: renderIndices.byteLength,
         usage: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST
       });
-      device.queue.writeBuffer(jellyIndexBuffer, 0, boundaryIndices);
-
-      // Floor geometry buffer (Large studio ground plane)
-      const floorVerts = new Float32Array([
-        -25.0, 0.0, -25.0,
-         25.0, 0.0, -25.0,
-         25.0, 0.0,  25.0,
-        -25.0, 0.0, -25.0,
-         25.0, 0.0,  25.0,
-        -25.0, 0.0,  25.0
-      ]);
-      const floorVertexBuffer = device.createBuffer({
-        size: floorVerts.byteLength,
-        usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST
-      });
-      device.queue.writeBuffer(floorVertexBuffer, 0, floorVerts);
+      device.queue.writeBuffer(jellyIndexBuffer, 0, renderIndices);
 
       // Seed geometry buffers
       const seedVertexBuffer = device.createBuffer({
         size: (seedMesh.positions.length + seedMesh.normals.length) * 4,
         usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST
       });
-      // Interleave seed positions and normals
       const seedCombined = new Float32Array(seedMesh.positions.length * 2);
       for (let i = 0; i < seedMesh.positions.length / 3; i++) {
         seedCombined[i * 6 + 0] = seedMesh.positions[i * 3 + 0];
@@ -2181,13 +2289,12 @@
       });
       device.queue.writeBuffer(seedIndexBuffer, 0, seedMesh.indices);
 
-      // Seed instance matrices uniform buffer (group 1, binding 0)
       const seedInstanceBuffer = device.createBuffer({
-        size: 16 * 16 * 4, // 16 matrices
+        size: 16 * 16 * 4,
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
       });
 
-      // Wireframe line list buffer
+      // Wireframe lines buffer
       const wireIndices = new Uint16Array(numEdges * 2);
       for (let e = 0; e < numEdges; e++) {
         wireIndices[e * 2 + 0] = edgeIndices[e * 2 + 0];
@@ -2199,8 +2306,12 @@
       });
       device.queue.writeBuffer(wireIndexBuffer, 0, wireIndices);
 
-      // Main Uniform Buffer (viewProj, invViewProj, lights, presets, slice telemetry)
-      // Must be aligned to 256 bytes
+      const wireVertexBuffer = device.createBuffer({
+        size: numVerts * 3 * 4,
+        usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST
+      });
+
+      // Uniform Buffers (aligned to 256 bytes)
       const uniformBufferSize = 512;
       const uniformBuffer = device.createBuffer({
         size: uniformBufferSize,
@@ -2208,16 +2319,9 @@
       });
       const uniformData = new Float32Array(uniformBufferSize / 4);
 
-      // Back-Face Uniform Buffer
-      const backUniformBuffer = device.createBuffer({
-        size: 256,
-        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
-      });
-      const backUniformData = new Float32Array(64);
-
-      // ── BIND GROUPS & PIPELINES ──
-      // Bind group layout for back-face pass
-      const backBindGroupLayout = device.createBindGroupLayout({
+            // ── BIND GROUPS & PIPELINES ──
+      // 1. Uniform-only bind group layout (for Cyc, Wire, and Seeds Group 0)
+      const uniformOnlyBindGroupLayout = device.createBindGroupLayout({
         entries: [{
           binding: 0,
           visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
@@ -2225,21 +2329,13 @@
         }]
       });
 
-      const backBindGroup = device.createBindGroup({
-        layout: backBindGroupLayout,
-        entries: [{ binding: 0, resource: { buffer: backUniformBuffer } }]
+      const uniformOnlyBindGroup = device.createBindGroup({
+        layout: uniformOnlyBindGroupLayout,
+        entries: [{ binding: 0, resource: { buffer: uniformBuffer } }]
       });
 
-      const backPipelineLayout = device.createPipelineLayout({
-        bindGroupLayouts: [backBindGroupLayout]
-      });
-
-      // Texture targets for back-face depth & world thickness pass
-      let backPosTexture = null;
-      let depthTexture = null;
-      let mainBindGroup = null;
-
-      const mainBindGroupLayout = device.createBindGroupLayout({
+      // 2. Jelly Bind Group Layout (Group 0: uniform, backPosTex, sceneTex)
+      const jellyBindGroupLayout = device.createBindGroupLayout({
         entries: [
           {
             binding: 0,
@@ -2250,11 +2346,28 @@
             binding: 1,
             visibility: GPUShaderStage.FRAGMENT,
             texture: { sampleType: 'unfilterable-float', viewDimension: '2d' }
+          },
+          {
+            binding: 2,
+            visibility: GPUShaderStage.FRAGMENT,
+            texture: { sampleType: 'unfilterable-float', viewDimension: '2d' }
           }
         ]
       });
 
-      const seedBindGroupLayout = device.createBindGroupLayout({
+      // 3. Blit Bind Group Layout (Group 0: sceneTex)
+      const blitBindGroupLayout = device.createBindGroupLayout({
+        entries: [
+          {
+            binding: 0,
+            visibility: GPUShaderStage.FRAGMENT,
+            texture: { sampleType: 'unfilterable-float', viewDimension: '2d' }
+          }
+        ]
+      });
+
+      // 4. Seed Instance Bind Group Layout (Group 1: seedModelMatrices)
+      const seedInstanceBindGroupLayout = device.createBindGroupLayout({
         entries: [{
           binding: 0,
           visibility: GPUShaderStage.VERTEX,
@@ -2262,20 +2375,43 @@
         }]
       });
 
-      const seedBindGroup = device.createBindGroup({
-        layout: seedBindGroupLayout,
+      const seedInstanceBindGroup = device.createBindGroup({
+        layout: seedInstanceBindGroupLayout,
         entries: [{ binding: 0, resource: { buffer: seedInstanceBuffer } }]
       });
 
-      const mainPipelineLayout = device.createPipelineLayout({
-        bindGroupLayouts: [mainBindGroupLayout]
+      // Pipeline Layouts
+      const backPipelineLayout = device.createPipelineLayout({
+        bindGroupLayouts: [uniformOnlyBindGroupLayout]
+      });
+
+      const cycPipelineLayout = device.createPipelineLayout({
+        bindGroupLayouts: [uniformOnlyBindGroupLayout]
+      });
+
+      const jellyPipelineLayout = device.createPipelineLayout({
+        bindGroupLayouts: [jellyBindGroupLayout]
+      });
+
+      const blitPipelineLayout = device.createPipelineLayout({
+        bindGroupLayouts: [blitBindGroupLayout]
       });
 
       const seedPipelineLayout = device.createPipelineLayout({
-        bindGroupLayouts: [mainBindGroupLayout, seedBindGroupLayout]
+        bindGroupLayouts: [uniformOnlyBindGroupLayout, seedInstanceBindGroupLayout]
       });
 
-      // Pipeline 1: Back-Face Render Pipeline (cullMode: 'front')
+      const wirePipelineLayout = device.createPipelineLayout({
+        bindGroupLayouts: [uniformOnlyBindGroupLayout]
+      });
+
+      let backPosTexture = null;
+      let sceneTexture = null;
+      let depthTexture = null;
+      let jellyBindGroup = null;
+      let blitBindGroup = null;
+
+      // Pipeline 1: Back-Face Depth & Position (cullMode: 'front')
       const backPipeline = device.createRenderPipeline({
         layout: backPipelineLayout,
         vertex: {
@@ -2283,7 +2419,12 @@
           entryPoint: 'vs_main',
           buffers: [{
             arrayStride: vertexStride,
-            attributes: [{ shaderLocation: 0, offset: 0, format: 'float32x3' }]
+            attributes: [
+              { shaderLocation: 0, offset: 0, format: 'float32x3' },
+              { shaderLocation: 1, offset: 12, format: 'float32x3' },
+              { shaderLocation: 2, offset: 24, format: 'float32x2' },
+              { shaderLocation: 3, offset: 32, format: 'float32' }
+            ]
           }]
         },
         fragment: {
@@ -2293,7 +2434,7 @@
         },
         primitive: {
           topology: 'triangle-list',
-          cullMode: 'front' // Render back faces!
+          cullMode: 'front'
         },
         depthStencil: {
           depthWriteEnabled: true,
@@ -2302,63 +2443,53 @@
         }
       });
 
-      // Pipeline 2: Front-Face Translucent Watermelon Jelly (cullMode: 'back')
+      // Pipeline 2: Studio Cyclorama Backdrop & Floor (rendered into sceneTexture)
+      const cycPipeline = device.createRenderPipeline({
+        layout: cycPipelineLayout,
+        vertex: {
+          module: mainShaderModule,
+          entryPoint: 'vs_cyc'
+        },
+        fragment: {
+          module: mainShaderModule,
+          entryPoint: 'fs_cyc',
+          targets: [{ format: canvasFormat }]
+        },
+        primitive: {
+          topology: 'triangle-list',
+          cullMode: 'none'
+        },
+        depthStencil: {
+          depthWriteEnabled: false,
+          depthCompare: 'always',
+          format: 'depth24plus'
+        }
+      });
+
+      // Pipeline 3: Translucent Watermelon Jelly (cullMode: 'back')
       const jellyPipeline = device.createRenderPipeline({
-        layout: mainPipelineLayout,
+        layout: jellyPipelineLayout,
         vertex: {
           module: mainShaderModule,
           entryPoint: 'vs_jelly',
           buffers: [{
             arrayStride: vertexStride,
             attributes: [
-              { shaderLocation: 0, offset: 0, format: 'float32x3' }, // pos
-              { shaderLocation: 1, offset: 12, format: 'float32x3' }, // normal
-              { shaderLocation: 2, offset: 24, format: 'float32x2' }, // uv
-              { shaderLocation: 3, offset: 32, format: 'float32' }    // layer
+              { shaderLocation: 0, offset: 0, format: 'float32x3' },
+              { shaderLocation: 1, offset: 12, format: 'float32x3' },
+              { shaderLocation: 2, offset: 24, format: 'float32x2' },
+              { shaderLocation: 3, offset: 32, format: 'float32' }
             ]
           }]
         },
         fragment: {
           module: mainShaderModule,
           entryPoint: 'fs_jelly',
-          targets: [{
-            format: canvasFormat,
-            blend: {
-              color: { srcFactor: 'src-alpha', dstFactor: 'one-minus-src-alpha', operation: 'add' },
-              alpha: { srcFactor: 'one', dstFactor: 'one-minus-src-alpha', operation: 'add' }
-            }
-          }]
-        },
-        primitive: {
-          topology: 'triangle-list',
-          cullMode: 'back'
-        },
-        depthStencil: {
-          depthWriteEnabled: true,
-          depthCompare: 'less',
-          format: 'depth24plus'
-        }
-      });
-
-      // Pipeline 3: Studio Floor Pipeline
-      const floorPipeline = device.createRenderPipeline({
-        layout: mainPipelineLayout,
-        vertex: {
-          module: mainShaderModule,
-          entryPoint: 'vs_floor',
-          buffers: [{
-            arrayStride: 3 * 4,
-            attributes: [{ shaderLocation: 0, offset: 0, format: 'float32x3' }]
-          }]
-        },
-        fragment: {
-          module: mainShaderModule,
-          entryPoint: 'fs_floor',
           targets: [{ format: canvasFormat }]
         },
         primitive: {
           topology: 'triangle-list',
-          cullMode: 'none'
+          cullMode: 'back'
         },
         depthStencil: {
           depthWriteEnabled: true,
@@ -2392,19 +2523,42 @@
         },
         depthStencil: {
           depthWriteEnabled: true,
-          depthCompare: 'less',
+          depthCompare: 'less-equal',
           format: 'depth24plus'
         }
       });
 
-      // Pipeline 5: Wireframe Mesh Pipeline
+      // Pipeline 5: Screen Blit Pipeline (copies sceneTexture to canvas)
+      const blitPipeline = device.createRenderPipeline({
+        layout: blitPipelineLayout,
+        vertex: {
+          module: blitShaderModule,
+          entryPoint: 'vs_blit'
+        },
+        fragment: {
+          module: blitShaderModule,
+          entryPoint: 'fs_blit',
+          targets: [{ format: canvasFormat }]
+        },
+        primitive: {
+          topology: 'triangle-list',
+          cullMode: 'none'
+        },
+        depthStencil: {
+          depthWriteEnabled: false,
+          depthCompare: 'always',
+          format: 'depth24plus'
+        }
+      });
+
+      // Pipeline 6: Wireframe Mesh Pipeline
       const wirePipeline = device.createRenderPipeline({
-        layout: mainPipelineLayout,
+        layout: wirePipelineLayout,
         vertex: {
           module: mainShaderModule,
           entryPoint: 'vs_wire',
           buffers: [{
-            arrayStride: vertexStride,
+            arrayStride: 3 * 4,
             attributes: [{ shaderLocation: 0, offset: 0, format: 'float32x3' }]
           }]
         },
@@ -2432,11 +2586,18 @@
       // Resize texture targets function
       function resizeTargets(width, height) {
         if (backPosTexture) backPosTexture.destroy();
+        if (sceneTexture) sceneTexture.destroy();
         if (depthTexture) depthTexture.destroy();
 
         backPosTexture = device.createTexture({
           size: [width, height],
           format: 'rgba16float',
+          usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING
+        });
+
+        sceneTexture = device.createTexture({
+          size: [width, height],
+          format: canvasFormat,
           usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING
         });
 
@@ -2446,37 +2607,47 @@
           usage: GPUTextureUsage.RENDER_ATTACHMENT
         });
 
-        mainBindGroup = device.createBindGroup({
-          layout: mainBindGroupLayout,
+        jellyBindGroup = device.createBindGroup({
+          layout: jellyBindGroupLayout,
           entries: [
             { binding: 0, resource: { buffer: uniformBuffer } },
-            { binding: 1, resource: backPosTexture.createView() }
+            { binding: 1, resource: backPosTexture.createView() },
+            { binding: 2, resource: sceneTexture.createView() }
+          ]
+        });
+
+        blitBindGroup = device.createBindGroup({
+          layout: blitBindGroupLayout,
+          entries: [
+            { binding: 0, resource: sceneTexture.createView() }
           ]
         });
       }
 
-      // Initial sizing
-      let currentWidth = canvas.clientWidth || 800;
-      let currentHeight = canvas.clientHeight || 600;
-      canvas.width = Math.floor(currentWidth * window.devicePixelRatio);
-      canvas.height = Math.floor(currentHeight * window.devicePixelRatio);
       resizeTargets(canvas.width, canvas.height);
 
-      window.addEventListener('resize', () => {
-        const w = Math.floor(canvas.clientWidth * window.devicePixelRatio);
-        const h = Math.floor(canvas.clientHeight * window.devicePixelRatio);
+      function handleResize() {
+        const rect = canvas.getBoundingClientRect();
+        const w = Math.max(800, Math.floor((rect.width || 800) * window.devicePixelRatio));
+        const h = Math.max(600, Math.floor((rect.height || 600) * window.devicePixelRatio));
         if (w !== canvas.width || h !== canvas.height) {
           canvas.width = w;
           canvas.height = h;
+          ctx.configure({
+            device,
+            format: canvasFormat,
+            alphaMode: 'premultiplied'
+          });
           resizeTargets(w, h);
         }
-      });
+      }
+
+      window.addEventListener('resize', handleResize);
 
       // ── CAMERA & INTERACTION STATE ──
-      // Camera viewing angles: three-quarter view revealing flesh, seeds, and substantial thickness
-      let camAzimuth = 0.55;    // Orbit angle
-      let camElevation = 0.38;  // Height tilt
-      let camDistance = 6.4;
+      let camAzimuth = 0.52;
+      let camElevation = 0.36;
+      let camDistance = 6.2;
       const camTarget = Vec3.create(0.0, 1.15, 0.0);
       const camPos = Vec3.create();
 
@@ -2502,7 +2673,7 @@
         Mat4.invert(invViewProjMatrix, viewProjMatrix);
       }
 
-      // ── POINTER & TOUCH HANDLING (RAYCASTING & DRAGGING) ──
+      // ── POINTER & TOUCH HANDLING (RAYCASTING & COMPLIANT DRAGGING) ──
       let isPointerDown = false;
       let isOrbiting = false;
       let lastPointerX = 0;
@@ -2515,7 +2686,6 @@
         const ndcX = ((screenX - rect.left) / rect.width) * 2.0 - 1.0;
         const ndcY = 1.0 - ((screenY - rect.top) / rect.height) * 2.0;
 
-        // Unproject near and far points
         const nearClip = new Float32Array([ndcX, ndcY, 0.0, 1.0]);
         const farClip = new Float32Array([ndcX, ndcY, 1.0, 1.0]);
 
@@ -2548,14 +2718,13 @@
 
         // Test ray against watermelon vertices
         let bestVert = -1;
-        let closestDist = 0.42; // Grab threshold radius
+        let closestDist = 0.48;
 
         for (let i = 0; i < numVerts; i++) {
-          const vx = pos[i * 3];
+          const vx = pos[i * 3 + 0];
           const vy = pos[i * 3 + 1];
           const vz = pos[i * 3 + 2];
 
-          // Point to ray distance
           const wx = vx - ray.origin[0];
           const wy = vy - ray.origin[1];
           const wz = vz - ray.origin[2];
@@ -2577,32 +2746,14 @@
           isOrbiting = false;
           grabVertIdx = bestVert;
 
-          // Set up grab plane facing the camera through the grabbed vertex
-          grabPlanePoint[0] = pos[bestVert * 3];
+          grabPlanePoint[0] = pos[bestVert * 3 + 0];
           grabPlanePoint[1] = pos[bestVert * 3 + 1];
           grabPlanePoint[2] = pos[bestVert * 3 + 2];
 
           Vec3.sub(grabPlaneNormal, camPos, grabPlanePoint);
           Vec3.normalize(grabPlaneNormal, grabPlaneNormal);
-
           Vec3.copy(grabTargetPos, grabPlanePoint);
-
-          // Compute smooth grab neighborhood falloff
-          const grabRadius = 0.75;
-          for (let i = 0; i < numVerts; i++) {
-            const dx = posRest[i * 3] - posRest[bestVert * 3];
-            const dy = posRest[i * 3 + 1] - posRest[bestVert * 3 + 1];
-            const dz = posRest[i * 3 + 2] - posRest[bestVert * 3 + 2];
-            const d = Math.hypot(dx, dy, dz);
-            if (d < grabRadius) {
-              const f = 1.0 - d / grabRadius;
-              grabWeights[i] = f * f;
-            } else {
-              grabWeights[i] = 0;
-            }
-          }
         } else {
-          // Missed the slice: Orbit camera
           isGrabbed = false;
           isOrbiting = true;
         }
@@ -2617,7 +2768,6 @@
         lastPointerY = e.clientY;
 
         if (isGrabbed && grabVertIdx >= 0) {
-          // Intersect ray with grab plane
           const ray = getRayFromScreen(e.clientX, e.clientY);
           const denom = Vec3.dot(ray.direction, grabPlaneNormal);
           if (Math.abs(denom) > 1e-6) {
@@ -2626,20 +2776,19 @@
             const t = Vec3.dot(diff, grabPlaneNormal) / denom;
             if (t > 0) {
               grabTargetPos[0] = ray.origin[0] + ray.direction[0] * t;
-              grabTargetPos[1] = Math.max(FLOOR_Y + 0.05, ray.origin[1] + ray.direction[1] * t);
+              grabTargetPos[1] = Math.max(FLOOR_Y + 0.02, ray.origin[1] + ray.direction[1] * t);
               grabTargetPos[2] = ray.origin[2] + ray.direction[2] * t;
             }
           }
         } else if (isOrbiting) {
-          // Orbit camera smoothly
           camAzimuth += dx * 0.007;
-          camElevation = Math.max(0.12, Math.min(1.42, camElevation + dy * 0.007));
+          camElevation = Math.max(0.10, Math.min(1.42, camElevation + dy * 0.007));
         }
       });
 
       const endPointer = (e) => {
         if (isPointerDown) {
-          canvas.releasePointerCapture(e.pointerId);
+          try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
           isPointerDown = false;
           isGrabbed = false;
           isOrbiting = false;
@@ -2695,7 +2844,6 @@
         showMesh = e.target.checked;
       });
 
-      // Keyboard shortcuts: Space (pause), N (nudge), R (reset)
       window.addEventListener('keydown', (e) => {
         if (e.code === 'Space') {
           e.preventDefault();
@@ -2707,7 +2855,6 @@
         }
       });
 
-      // Preset buttons
       const presetButtons = document.querySelectorAll('.preset-btn');
       presetButtons.forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -2721,7 +2868,6 @@
         });
       });
 
-      // Telemetry DOM readouts
       const statMass = document.getElementById('stat-mass');
       const statVolume = document.getElementById('stat-volume');
       const statKE = document.getElementById('stat-ke');
@@ -2737,7 +2883,6 @@
         const deltaSeconds = Math.min((now - lastTime) / 1000.0, 0.08);
         lastTime = now;
 
-        // Physics step with accumulator
         if (!isPaused) {
           const simSpeed = simSlowMotion ? 0.25 : 1.0;
           accumulator += deltaSeconds * simSpeed;
@@ -2747,11 +2892,10 @@
             accumulator -= fixedDt;
             stepsThisFrame++;
           }
-          if (accumulator >= fixedDt) accumulator = 0; // prevent spiral of death
+          if (accumulator >= fixedDt) accumulator = 0;
         }
 
-        // Update surface vertex normals and seed positions
-        updateSurfaceNormals();
+        updateSurfaceGeometry();
         updateSeedTransforms();
 
         // Compute Live Telemetry: Volume & Kinetic Energy
@@ -2795,98 +2939,93 @@
         statVolume.textContent = `${volPct.toFixed(1)} %`;
         statKE.textContent = keMilliJoules > 10.0 ? `${keMilliJoules.toFixed(1)} mJ` : `${(keMilliJoules * 1000).toFixed(0)} µJ`;
 
-        // Update Camera matrices
         updateCameraMatrices();
 
-        // Pack vertex buffer data: pos (3), normal (3), uv (2), layer (1)
-        for (let i = 0; i < numVerts; i++) {
-          const off = i * 9;
-          vertexBufferData[off + 0] = pos[i * 3 + 0];
-          vertexBufferData[off + 1] = pos[i * 3 + 1];
-          vertexBufferData[off + 2] = pos[i * 3 + 2];
-          vertexBufferData[off + 3] = vertNormals[i * 3 + 0];
-          vertexBufferData[off + 4] = vertNormals[i * 3 + 1];
-          vertexBufferData[off + 5] = vertNormals[i * 3 + 2];
-          vertexBufferData[off + 6] = vertUV[i * 2 + 0];
-          vertexBufferData[off + 7] = vertUV[i * 2 + 1];
-          vertexBufferData[off + 8] = boundaryVertLayer[i];
-        }
-        device.queue.writeBuffer(jellyVertexBuffer, 0, vertexBufferData);
+        device.queue.writeBuffer(jellyVertexBuffer, 0, renderBufferData);
         device.queue.writeBuffer(seedInstanceBuffer, 0, seedInstanceTransforms);
 
-        // Pack Uniform Buffer
-        // mat4 viewProj (16 floats)
-        uniformData.set(viewProjMatrix, 0);
-        // mat4 invViewProj (16 floats)
-        uniformData.set(invViewProjMatrix, 16);
-        // cameraPos (3 floats) + time (1 float)
-        uniformData[32] = camPos[0];
+        if (showMesh) {
+          const wireVerts = new Float32Array(numVerts * 3);
+          for (let i = 0; i < numVerts * 3; i++) {
+            wireVerts[i] = pos[i];
+          }
+          device.queue.writeBuffer(wireVertexBuffer, 0, wireVerts);
+        }
+
+        // Pack Uniform Buffer (352 bytes / 88 floats, 16-byte aligned)
+        uniformData.set(viewProjMatrix, 0);       // 0..15 (mat4)
+        uniformData.set(invViewProjMatrix, 16);   // 16..31 (mat4)
+        uniformData[32] = camPos[0];              // 32..35 (cameraPos: vec4)
         uniformData[33] = camPos[1];
         uniformData[34] = camPos[2];
         uniformData[35] = now * 0.001;
-        // screenSize (2 floats) + firmness (1 float) + pad (1 float)
-        uniformData[36] = canvas.width;
+
+        uniformData[36] = canvas.width;           // 36..39 (screenParams: vec4)
         uniformData[37] = canvas.height;
         uniformData[38] = simFirmness;
-        uniformData[39] = 0;
+        uniformData[39] = simDamping;
 
-        // Preset Colors
-        // fleshBase (3 floats) + pad
-        uniformData[40] = currentPreset.fleshBase[0];
+        uniformData[40] = currentPreset.fleshBase[0]; // 40..43 (fleshBase: vec4)
         uniformData[41] = currentPreset.fleshBase[1];
         uniformData[42] = currentPreset.fleshBase[2];
-        uniformData[43] = 0;
-        // fleshAbsorption (3 floats) + pad
-        uniformData[44] = currentPreset.fleshAbsorption[0];
+        uniformData[43] = currentPreset.fleshBase[3];
+
+        uniformData[44] = currentPreset.fleshAbsorption[0]; // 44..47 (fleshAbsorption: vec4)
         uniformData[45] = currentPreset.fleshAbsorption[1];
         uniformData[46] = currentPreset.fleshAbsorption[2];
-        uniformData[47] = 0;
-        // pithColor (3 floats) + pad
-        uniformData[48] = currentPreset.pithColor[0];
+        uniformData[47] = currentPreset.fleshAbsorption[3];
+
+        uniformData[48] = currentPreset.pithColor[0]; // 48..51 (pithColor: vec4)
         uniformData[49] = currentPreset.pithColor[1];
         uniformData[50] = currentPreset.pithColor[2];
-        uniformData[51] = 0;
-        // rindBase (3 floats) + pad
-        uniformData[52] = currentPreset.rindBase[0];
+        uniformData[51] = currentPreset.pithColor[3];
+
+        uniformData[52] = currentPreset.rindBase[0]; // 52..55 (rindBase: vec4)
         uniformData[53] = currentPreset.rindBase[1];
         uniformData[54] = currentPreset.rindBase[2];
-        uniformData[55] = 0;
-        // rindDark (3 floats) + pad
-        uniformData[56] = currentPreset.rindDark[0];
+        uniformData[55] = currentPreset.rindBase[3];
+
+        uniformData[56] = currentPreset.rindDark[0]; // 56..59 (rindDark: vec4)
         uniformData[57] = currentPreset.rindDark[1];
         uniformData[58] = currentPreset.rindDark[2];
-        uniformData[59] = 0;
-        // shadowTint (3 floats) + pad
-        uniformData[60] = currentPreset.shadowTint[0];
+        uniformData[59] = currentPreset.rindDark[3];
+
+        uniformData[60] = currentPreset.shadowTint[0]; // 60..63 (shadowTint: vec4)
         uniformData[61] = currentPreset.shadowTint[1];
         uniformData[62] = currentPreset.shadowTint[2];
-        uniformData[63] = 0;
-        // causticTint (3 floats) + pad
-        uniformData[64] = currentPreset.causticTint[0];
+        uniformData[63] = currentPreset.shadowTint[3];
+
+        uniformData[64] = currentPreset.causticTint[0]; // 64..67 (causticTint: vec4)
         uniformData[65] = currentPreset.causticTint[1];
         uniformData[66] = currentPreset.causticTint[2];
-        uniformData[67] = 0;
+        uniformData[67] = currentPreset.causticTint[3];
 
-        // Slice bounds & center
-        uniformData[68] = minX;
+        uniformData[68] = minX;                     // 68..71 (sliceBounds: vec4)
         uniformData[69] = maxX;
         uniformData[70] = minZ;
         uniformData[71] = maxZ;
 
-        uniformData[72] = sumX / numVerts;
+        uniformData[72] = sumX / numVerts;          // 72..75 (sliceCenter: vec4)
         uniformData[73] = sumY / numVerts;
         uniformData[74] = sumZ / numVerts;
         uniformData[75] = minY;
 
-        device.queue.writeBuffer(uniformBuffer, 0, uniformData);
+        uniformData[76] = 1.4;                      // 76..79 (lightKey: vec4)
+        uniformData[77] = 2.8;
+        uniformData[78] = 1.8;
+        uniformData[79] = 1.0;
 
-        // Back Uniform data
-        backUniformData.set(viewProjMatrix, 0);
-        backUniformData[32] = camPos[0];
-        backUniformData[33] = camPos[1];
-        backUniformData[34] = camPos[2];
-        backUniformData[35] = now * 0.001;
-        device.queue.writeBuffer(backUniformBuffer, 0, backUniformData);
+        uniformData[80] = -2.0;                     // 80..83 (lightFill: vec4)
+        uniformData[81] = 1.4;
+        uniformData[82] = 0.8;
+        uniformData[83] = 0.4;
+
+        uniformData[84] = 0.0;                      // 84..87 (lightRim: vec4)
+        uniformData[85] = 0.9;
+        uniformData[86] = -2.8;
+        uniformData[87] = 2.2;
+
+        device.queue.writeBuffer(uniformBuffer, 0, uniformData);
 
         // ── WEBGPU RENDER PASSES ──
         const commandEncoder = device.createCommandEncoder();
@@ -2907,17 +3046,17 @@
           }
         });
         backPass.setPipeline(backPipeline);
-        backPass.setBindGroup(0, backBindGroup);
+        backPass.setBindGroup(0, uniformOnlyBindGroup);
         backPass.setVertexBuffer(0, jellyVertexBuffer);
         backPass.setIndexBuffer(jellyIndexBuffer, 'uint16');
-        backPass.drawIndexed(boundaryIndices.length);
+        backPass.drawIndexed(renderIndices.length);
         backPass.end();
 
-        // PASS 2: Main Render Pass (Studio floor + Front-face jelly + Seeds + Wireframe)
-        const mainPass = commandEncoder.beginRenderPass({
+        // PASS 2: Render Backdrop & Back Seeds into sceneTexture
+        const scenePass = commandEncoder.beginRenderPass({
           colorAttachments: [{
-            view: ctx.getCurrentTexture().createView(),
-            clearValue: { r: 0.957, g: 0.949, b: 0.925, a: 1.0 },
+            view: sceneTexture.createView(),
+            clearValue: { r: 0.960, g: 0.952, b: 0.932, a: 1.0 },
             loadOp: 'clear',
             storeOp: 'store'
           }],
@@ -2929,46 +3068,73 @@
           }
         });
 
-        // 1. Draw Studio Floor
-        mainPass.setPipeline(floorPipeline);
-        mainPass.setBindGroup(0, mainBindGroup);
-        mainPass.setVertexBuffer(0, floorVertexBuffer);
-        mainPass.draw(6);
+        // 2a. Studio Cyclorama Backdrop & Floor
+        scenePass.setPipeline(cycPipeline);
+        scenePass.setBindGroup(0, uniformOnlyBindGroup);
+        scenePass.draw(3);
 
-        // 2. Draw Embedded Seeds (rendered inside the jelly volume)
-        mainPass.setPipeline(seedPipeline);
-        mainPass.setBindGroup(0, mainBindGroup);
-        mainPass.setBindGroup(1, seedBindGroup);
-        mainPass.setVertexBuffer(0, seedVertexBuffer);
-        mainPass.setIndexBuffer(seedIndexBuffer, 'uint16');
-        mainPass.drawIndexed(seedMesh.indices.length, numSeeds, 0, 0, 0);
+        // 2b. Back-Face Seeds (rendered into scene buffer, visible refracted through jelly!)
+        scenePass.setPipeline(seedPipeline);
+        scenePass.setBindGroup(0, uniformOnlyBindGroup);
+        scenePass.setBindGroup(1, seedInstanceBindGroup);
+        scenePass.setVertexBuffer(0, seedVertexBuffer);
+        scenePass.setIndexBuffer(seedIndexBuffer, 'uint16');
+        scenePass.drawIndexed(seedMesh.indices.length, 6, 0, 0, 6); // Instances 6..11
+        scenePass.end();
 
-        // 3. Draw Translucent Watermelon Jelly Front Faces (blended over floor and embedded seeds)
+        // PASS 3: Main Screen Presentation Pass
+        const mainPass = commandEncoder.beginRenderPass({
+          colorAttachments: [{
+            view: ctx.getCurrentTexture().createView(),
+            clearValue: { r: 0.960, g: 0.952, b: 0.932, a: 1.0 },
+            loadOp: 'clear',
+            storeOp: 'store'
+          }],
+          depthStencilAttachment: {
+            view: depthTexture.createView(),
+            depthClearValue: 1.0,
+            depthLoadOp: 'clear',
+            depthStoreOp: 'store'
+          }
+        });
+
+        // 3a. Blit full scene backdrop to screen
+        mainPass.setPipeline(blitPipeline);
+        mainPass.setBindGroup(0, blitBindGroup);
+        mainPass.draw(3);
+
+        // 3b. Translucent Watermelon Jelly Front Faces
         mainPass.setPipeline(jellyPipeline);
-        mainPass.setBindGroup(0, mainBindGroup);
+        mainPass.setBindGroup(0, jellyBindGroup);
         mainPass.setVertexBuffer(0, jellyVertexBuffer);
         mainPass.setIndexBuffer(jellyIndexBuffer, 'uint16');
-        mainPass.drawIndexed(boundaryIndices.length);
+        mainPass.drawIndexed(renderIndices.length);
 
-        // 4. Draw Wireframe Mesh (if enabled)
+        // 3c. Front-Face Seeds (embedded directly on surface)
+        mainPass.setPipeline(seedPipeline);
+        mainPass.setBindGroup(0, uniformOnlyBindGroup);
+        mainPass.setBindGroup(1, seedInstanceBindGroup);
+        mainPass.setVertexBuffer(0, seedVertexBuffer);
+        mainPass.setIndexBuffer(seedIndexBuffer, 'uint16');
+        mainPass.drawIndexed(seedMesh.indices.length, 6, 0, 0, 0); // Instances 0..5
+
+        // 3d. Wireframe Mesh Overlay (if enabled)
         if (showMesh) {
           mainPass.setPipeline(wirePipeline);
-          mainPass.setBindGroup(0, mainBindGroup);
-          mainPass.setVertexBuffer(0, jellyVertexBuffer);
+          mainPass.setBindGroup(0, uniformOnlyBindGroup);
+          mainPass.setVertexBuffer(0, wireVertexBuffer);
           mainPass.setIndexBuffer(wireIndexBuffer, 'uint16');
           mainPass.drawIndexed(wireIndices.length);
         }
 
         mainPass.end();
 
-        // Submit commands to GPU queue
         device.queue.submit([commandEncoder.finish()]);
       }
 
       requestAnimationFrame(renderFrame);
     }
 
-    // Initialize application when DOM is ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initWebGPU);
     } else {
