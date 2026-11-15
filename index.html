@@ -2042,6 +2042,7 @@
     `;
 
     // ── MAIN WEBGPU INITIALIZATION & RENDER LOOP ──
+    let recoveryAttempts = 0;
     async function initWebGPU() {
       const canvas = document.getElementById('gpu-canvas');
       const fallbackOverlay = document.getElementById('fallback-overlay');
